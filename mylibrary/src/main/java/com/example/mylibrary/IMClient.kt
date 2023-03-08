@@ -8,6 +8,7 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import android.os.RemoteCallbackList
 import com.example.mylibrary.entities.IMParams
+import com.example.mylibrary.entities.MessageModel
 import com.example.mylibrary.listener.IMLoginStatusReceiver
 import com.example.mylibrary.listener.IMMessageReceiver
 import com.example.mylibrary.utils.Logger
@@ -61,6 +62,15 @@ object IMClient {
         mLoginListListener.unregister(loginStatus)
     }
 
+    fun onReceive(messageModel: MessageModel) {
+        val listenerCount = mListListener.beginBroadcast()
+        Logger.log("listener count = $listenerCount")
+        for (i in 0 until listenerCount) {
+            mListListener.getBroadcastItem(i)?.onMessageReceived(messageModel)
+        }
+        mListListener.finishBroadcast()
+    }
+
 
     fun sendLoginStatus(status: Int) {
         val listenerCount = mLoginListListener.beginBroadcast()
@@ -70,9 +80,6 @@ object IMClient {
         }
         mLoginListListener.finishBroadcast()
     }
-
-
-
 
 
     @JvmStatic

@@ -19,11 +19,26 @@ object IMCore {
      */
     fun init(application: Application) {
         Logger.log("IM 初始化")
-        IMClient.init(application, IMParams.Builder().build(), object : IMLoginStatusReceiver.Stub() {
-            override fun loginStatus(status: Int) {
-                Logger.log("登录状态 $status")
-            }
-        }, IMReceiver())
+        IMClient.init(
+            application,
+            IMParams.Builder().build(),
+            object : IMLoginStatusReceiver.Stub() {
+                override fun loginStatus(status: Int) {
+                    when (status) {
+                        0 -> {
+                            Logger.log("正在登录websocket")
+                        }
+                        1 -> {
+                            Logger.log("登录成功")
+                        }
+                        2 -> {
+                            Logger.log("登录失败")
+                        }
+                    }
+                }
+            },
+            IMReceiver()
+        )
     }
 
     /**

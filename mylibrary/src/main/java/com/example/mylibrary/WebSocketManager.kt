@@ -83,7 +83,6 @@ object WebSocketManager {
                     }
                 }"
             )
-            IMClient.loginCallback?.loginStatus(IMLoginStatus.CONNECT_SUCCESS.ordinal)
         }
 
         override fun onMessage(webSocket: WebSocket, text: String) {
@@ -94,7 +93,7 @@ object WebSocketManager {
                 to = "client"
                 content = "${System.currentTimeMillis()}"
             }
-            IMClient.mReceiver?.onMessageReceived(messageModel)
+            IMClient.onReceive(messageModel)
         }
 
         override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {

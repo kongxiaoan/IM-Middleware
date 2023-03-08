@@ -1,6 +1,7 @@
 package com.example.mylibrary.utils
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 
 /**
  *
@@ -12,7 +13,10 @@ object Logger {
 
     const val TAG = "IM_LOGGER"
 
+    public val logLiveData: MutableLiveData<String> = MutableLiveData()
+
     fun log(contnet: String) {
+        logLiveData.postValue(contnet)
         Log.d(TAG, contnet)
     }
 }
