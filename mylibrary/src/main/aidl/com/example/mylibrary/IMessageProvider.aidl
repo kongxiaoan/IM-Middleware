@@ -3,6 +3,7 @@ package com.example.mylibrary;
 
 // Declare any non-default types here with import statements
 import com.example.mylibrary.entities.MessageModel;
+import com.example.mylibrary.entities.IMParams;
 import com.example.mylibrary.listener.IMMessageReceiver;
 import com.example.mylibrary.listener.IMLoginStatusReceiver;
 
@@ -10,6 +11,8 @@ interface IMessageProvider{
     void sendMessage(String message);
 
     void sendOrder(int order);
+
+    void login(in IMParams imParams);
 
     void registerMessageReceiveListener(IMMessageReceiver messageReceiver);
 

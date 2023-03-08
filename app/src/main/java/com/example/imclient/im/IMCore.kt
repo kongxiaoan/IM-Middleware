@@ -21,7 +21,9 @@ object IMCore {
         Logger.log("IM 初始化")
         IMClient.init(
             application,
-            IMParams.Builder().build(),
+            IMParams.Builder()
+                .withToken("auth")
+                .build(),
             object : IMLoginStatusReceiver.Stub() {
                 override fun loginStatus(status: Int) {
                     when (status) {

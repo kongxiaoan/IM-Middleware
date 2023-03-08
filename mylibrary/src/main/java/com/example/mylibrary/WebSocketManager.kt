@@ -6,6 +6,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import com.example.mylibrary.entities.IMLoginStatus
+import com.example.mylibrary.entities.IMParams
 import com.example.mylibrary.entities.MessageModel
 import com.example.mylibrary.utils.Logger
 import kotlinx.coroutines.*
@@ -23,9 +24,8 @@ import java.util.concurrent.TimeUnit
 object WebSocketManager {
     private const val WS_URL = "ws://192.168.31.222:8080"
     private val heartbeatInterval = 30000L
-    private val authMessage = "auth"
     private var isAuthorized = false
-
+    private var imParams: IMParams? = null
     private val httpClient by lazy {
         OkHttpClient().newBuilder()
             .readTimeout(10, TimeUnit.SECONDS)
@@ -39,10 +39,16 @@ object WebSocketManager {
     private var mWebSocket: WebSocket? = null
 
     public fun connect() {
-        val request = Request.Builder()
-            .url(WS_URL)
-            .build()
-        httpClient.newWebSocket(request, wsListener)
+        if(imParams != null) {
+            val request = Request.Builder()
+                .url(WS_URL)
+                .build()
+            httpClient.newWebSocket(request, wsListener)
+        }
+    }
+
+    fun login(imParams: IMParams) {
+        this.imParams = imParams
     }
 
     fun release() {
@@ -91,7 +97,7 @@ object WebSocketManager {
             super.onOpen(webSocket, response)
             Logger.log("连接成功")
             mWebSocket = webSocket
-            webSocket.send(authMessage)
+            webSocket.send(imParams?.token!!)
         }
 
         override fun onMessage(webSocket: WebSocket, text: String) {
@@ -163,7 +169,6 @@ object WebSocketManager {
     }
 
     fun registerNetwork(applicationContext: Context) {
-        Logger.log("IMClient?.mApplication = ${IMClient?.mApplication == null}")
         val connectivityManager: ConnectivityManager =
             applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)

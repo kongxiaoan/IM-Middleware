@@ -66,7 +66,6 @@ object IMClient {
 
     fun onReceive(messageModel: MessageModel) {
         val listenerCount = mListListener.beginBroadcast()
-        Logger.log("listener count = $listenerCount")
         for (i in 0 until listenerCount) {
             mListListener.getBroadcastItem(i)?.onMessageReceived(messageModel)
         }
@@ -76,7 +75,6 @@ object IMClient {
 
     fun sendLoginStatus(status: Int) {
         val listenerCount = mLoginListListener.beginBroadcast()
-        Logger.log("listener count = $listenerCount")
         for (i in 0 until listenerCount) {
             mLoginListListener.getBroadcastItem(i)?.loginStatus(status)
         }
@@ -92,7 +90,6 @@ object IMClient {
         receiver: IMMessageReceiver.Stub
     ) {
         mApplication = application
-        Logger.log("开始初始化 ${mApplication == null}")
         mReceiver = receiver
         this.imParams = imParams
         this.loginCallback = loginStatusCallback
@@ -110,6 +107,7 @@ object IMClient {
     fun disConnect() {
         messageSender?.sendOrder(IMClientOrder.DISCONNECT.ordinal)
     }
+
     @JvmStatic
     fun loginOut() {
         messageSender?.run {
@@ -143,6 +141,7 @@ object IMClient {
                 asBinder().linkToDeath(deathRecipient, 0)
                 registerMessageReceiveListener(mReceiver)
                 registerLoginReceiveListener(loginCallback)
+                login(imParams)
             }
         }
 
@@ -151,6 +150,5 @@ object IMClient {
         }
 
     }
-
 
 }

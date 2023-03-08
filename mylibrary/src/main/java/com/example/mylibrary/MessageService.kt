@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.IBinder
 import android.os.Parcel
 import com.example.mylibrary.entities.IMLoginStatus
+import com.example.mylibrary.entities.IMParams
 import com.example.mylibrary.listener.IMLoginStatusReceiver
 import com.example.mylibrary.listener.IMMessageReceiver
 import com.example.mylibrary.utils.Logger
@@ -44,13 +45,21 @@ class MessageService : Service() {
             }
 
             override fun sendOrder(order: Int) {
-                when(order) {
+                when (order) {
                     0 -> {
                         WebSocketManager.connect()
                     }
                     1 -> {
                         WebSocketManager.release()
                     }
+                }
+            }
+
+            override fun login(imParams: IMParams?) {
+                if (imParams != null) {
+                    WebSocketManager.login(imParams)
+                } else {
+                    throw NullPointerException("imParams is null")
                 }
             }
 
