@@ -25,6 +25,7 @@ object IMClient {
     private val deathRecipient by lazy {
         object : IBinder.DeathRecipient {
             override fun binderDied() {
+                Logger.log("被杀死 ${messageSender != null}")
                 if (messageSender != null) {
                     messageSender?.asBinder()?.unlinkToDeath(this, 0)
                     messageSender = null
@@ -90,8 +91,8 @@ object IMClient {
         loginStatusCallback: IMLoginStatusReceiver.Stub,
         receiver: IMMessageReceiver.Stub
     ) {
-        Logger.log("开始初始化")
         mApplication = application
+        Logger.log("开始初始化 ${mApplication == null}")
         mReceiver = receiver
         this.imParams = imParams
         this.loginCallback = loginStatusCallback

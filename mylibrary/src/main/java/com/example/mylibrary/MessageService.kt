@@ -55,7 +55,7 @@ class MessageService : Service() {
             }
 
             override fun sendMessage(message: String?) {
-                message?.let { WebSocketManager.send(it) }
+                message?.let { WebSocketManager.sendMessage(it) }
             }
 
             override fun registerMessageReceiveListener(messageReceiver: IMMessageReceiver?) {
@@ -80,6 +80,7 @@ class MessageService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        WebSocketManager.registerNetwork(this)
         Logger.log("Service 启动")
     }
 
@@ -107,11 +108,7 @@ class MessageService : Service() {
 //
 //    }
 //
-
-    override fun onDestroy() {
-        serviceStop.set(true)
-        WebSocketManager.release()
-        super.onDestroy()
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        return START_STICKY // 或者返回 START_REDELIVER_INTENT
     }
-
 }
