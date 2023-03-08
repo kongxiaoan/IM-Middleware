@@ -3,10 +3,12 @@ package com.example.mylibrary
 import android.app.ActivityManager
 import android.content.Context
 import android.os.Process
-import com.example.mylibrary.entities.MessageModel
 import com.example.mylibrary.entities.IMLoginStatus
+import com.example.mylibrary.entities.MessageModel
 import com.example.mylibrary.utils.Logger
 import okhttp3.*
+import org.json.JSONException
+import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
 
@@ -43,7 +45,19 @@ object WebSocketManager {
     }
 
     fun send(message: String) {
-        mWebSocket?.send(message)
+        if (mWebSocket != null) {
+            mWebSocket?.send(message)
+        } else {
+            // WebSocket 未连接
+            // 处理未连接时的情况
+            val messageModel = MessageModel().apply {
+                from = "service"
+                to = "client"
+                content = "socket未连接"
+            }
+            IMClient.onReceive(messageModel)
+        }
+
     }
 
     /**
@@ -70,19 +84,16 @@ object WebSocketManager {
     private val wsListener = object : WebSocketListener() {
         override fun onOpen(webSocket: WebSocket, response: Response) {
             super.onOpen(webSocket, response)
-            Logger.log("onOpen ${webSocket == null}")
             mWebSocket = webSocket
-            IMClient.sendLoginStatus(IMLoginStatus.CONNECT_SUCCESS.ordinal)
-            Logger.log("onOpen ${mWebSocket == null}")
-            webSocket.send(
-                "我是客户端代码发送的 ${
-                    IMClient?.mApplication?.applicationContext?.let {
-                        getCurProcessName(
-                            it
-                        )
-                    }
-                }"
-            )
+            // 连接成功之后发送验证信息
+            val json = JSONObject()
+            try {
+                json.put("username", "admin")
+                json.put("password", "admin")
+                webSocket.send(json.toString())
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
         }
 
         override fun onMessage(webSocket: WebSocket, text: String) {
@@ -91,18 +102,30 @@ object WebSocketManager {
             val messageModel = MessageModel().apply {
                 from = "service"
                 to = "client"
-                content = "${System.currentTimeMillis()}"
+                content = text
             }
             IMClient.onReceive(messageModel)
         }
 
         override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
             super.onClosed(webSocket, code, reason)
+            val messageModel = MessageModel().apply {
+                from = "service"
+                to = "client"
+                content = reason
+            }
+            IMClient.onReceive(messageModel)
             IMClient.sendLoginStatus(IMLoginStatus.CONNECT_FAIL.ordinal)
         }
 
         override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
             super.onClosing(webSocket, code, reason)
+            val messageModel = MessageModel().apply {
+                from = "service"
+                to = "client"
+                content = reason
+            }
+            IMClient.onReceive(messageModel)
             IMClient.sendLoginStatus(IMLoginStatus.CONNECT_FAIL.ordinal)
         }
 
@@ -110,12 +133,11 @@ object WebSocketManager {
             super.onFailure(webSocket, t, response)
             IMClient.sendLoginStatus(IMLoginStatus.CONNECT_FAIL.ordinal)
             val messageModel = MessageModel().apply {
-                from = "onFailure  + ${t.localizedMessage}"
-                to = ""
-                content = "${System.currentTimeMillis()}"
+                from = "service"
+                to = "client"
+                content = t.message
             }
             IMClient.onReceive(messageModel)
-            Logger.log("onFailure " + t.localizedMessage)
         }
     }
 }

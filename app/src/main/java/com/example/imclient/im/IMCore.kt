@@ -26,13 +26,13 @@ object IMCore {
                 override fun loginStatus(status: Int) {
                     when (status) {
                         0 -> {
-                            Logger.log("正在登录websocket")
+                            Logger.log("正在连接websocket")
                         }
                         1 -> {
-                            Logger.log("登录成功")
+                            Logger.log("连接成功")
                         }
                         2 -> {
-                            Logger.log("登录失败")
+                            Logger.log("断开连接或失败")
                         }
                     }
                 }
