@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <permission
+        android:name="com.example.mylibrary.permission.REMOTE_SERVICE_PERMISSION"
+        android:protectionLevel="normal" />
+    <application>
+        <service
+            android:name=".MessageService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":im" />
+    </application>
+</manifest>
