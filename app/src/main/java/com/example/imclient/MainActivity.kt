@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import com.example.imclient.im.IMCore
+import com.example.mylibrary.IMClient
 import com.example.mylibrary.utils.Logger
 
 
@@ -18,7 +19,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         Logger.logLiveData.observeForever {
             appendLog("$it")
         }
@@ -49,6 +49,18 @@ class MainActivity : AppCompatActivity() {
     private fun scrollToBottom() {
         val scrollView = findViewById<NestedScrollView>(R.id.scrollView)
         scrollView.post { scrollView.fullScroll(View.FOCUS_DOWN) }
+    }
+
+    fun clearMessage(view: View) {
+        imLogTV.text = ""
+    }
+
+    fun connectSocket(view: View) {
+        IMClient.connect()
+    }
+
+    fun disConnectSocket(view: View) {
+        IMClient.disConnect()
     }
 
 

@@ -20,5 +20,10 @@ enum class IMLoginStatus(status: Int) {
     /**
      * 连接失败
      */
-    CONNECT_FAIL(-1)
+    CONNECT_FAIL(-1),
+
+    /**
+     * 未启动
+     */
+    CONNECT_DEFAULT(2)
 }

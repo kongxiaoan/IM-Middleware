@@ -9,6 +9,8 @@ import com.example.mylibrary.listener.IMLoginStatusReceiver;
 interface IMessageProvider{
     void sendMessage(String message);
 
+    void sendOrder(int order);
+
     void registerMessageReceiveListener(IMMessageReceiver messageReceiver);
 
     void unRegisterMessageReceiveListener(IMMessageReceiver messageReceiver);

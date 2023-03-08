@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.os.RemoteCallbackList
+import com.example.mylibrary.entities.IMClientOrder
 import com.example.mylibrary.entities.IMParams
 import com.example.mylibrary.entities.MessageModel
 import com.example.mylibrary.listener.IMLoginStatusReceiver
@@ -101,7 +102,13 @@ object IMClient {
         messageSender?.sendMessage(message)
     }
 
+    fun connect() {
+        messageSender?.sendOrder(IMClientOrder.CONNECT.ordinal)
+    }
 
+    fun disConnect() {
+        messageSender?.sendOrder(IMClientOrder.DISCONNECT.ordinal)
+    }
     @JvmStatic
     fun loginOut() {
         messageSender?.run {

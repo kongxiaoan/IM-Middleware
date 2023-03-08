@@ -109,9 +109,13 @@ object WebSocketManager {
         override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
             super.onFailure(webSocket, t, response)
             IMClient.sendLoginStatus(IMLoginStatus.CONNECT_FAIL.ordinal)
+            val messageModel = MessageModel().apply {
+                from = "onFailure  + ${t.localizedMessage}"
+                to = ""
+                content = "${System.currentTimeMillis()}"
+            }
+            IMClient.onReceive(messageModel)
             Logger.log("onFailure " + t.localizedMessage)
         }
     }
-
-
 }

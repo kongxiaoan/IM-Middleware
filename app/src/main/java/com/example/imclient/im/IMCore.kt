@@ -48,6 +48,7 @@ object IMCore {
         IMClient.send(message)
     }
 
+
     /**
      * 登出
      */

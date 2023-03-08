@@ -43,6 +43,17 @@ class MessageService : Service() {
                 return super.onTransact(code, data, reply, flags)
             }
 
+            override fun sendOrder(order: Int) {
+                when(order) {
+                    0 -> {
+                        WebSocketManager.connect()
+                    }
+                    1 -> {
+                        WebSocketManager.release()
+                    }
+                }
+            }
+
             override fun sendMessage(message: String?) {
                 message?.let { WebSocketManager.send(it) }
             }
@@ -57,9 +68,7 @@ class MessageService : Service() {
 
             override fun registerLoginReceiveListener(loginStatusReceiver: IMLoginStatusReceiver?) {
                 IMClient.registerLoginStatus(loginStatusReceiver)
-                IMClient.sendLoginStatus(IMLoginStatus.CONNECTING.ordinal)
-                // 进程连接成功
-                WebSocketManager.connect()
+                IMClient.sendLoginStatus(IMLoginStatus.CONNECT_DEFAULT.ordinal)
             }
 
             override fun unRegisterLoginReceiveListener(loginStatusReceiver: IMLoginStatusReceiver?) {

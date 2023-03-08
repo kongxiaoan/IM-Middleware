@@ -19,8 +19,8 @@
             android:layout_height="match_parent"
             android:fadeScrollbars="false"
             android:gravity="top"
-            android:overScrollMode="never"
             android:inputType="textMultiLine"
+            android:overScrollMode="never"
             android:scrollbarStyle="insideInset"
             android:scrollbars="vertical"
             android:scrollHorizontally="false"
@@ -34,6 +34,34 @@
         android:layout_height="50dp"
         android:onClick="sendMessage"
         android:text="发送消息"
+        app:layout_constraintBottom_toTopOf="@id/clearMessageBt"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/clearMessageBt"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:onClick="clearMessage"
+        android:text="清除消息"
+        app:layout_constraintBottom_toTopOf="@id/connectMessageBt"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/connectMessageBt"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:onClick="connectSocket"
+        android:text="连接socket"
+        app:layout_constraintBottom_toTopOf="@id/disConnectMessageBt"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/disConnectMessageBt"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="50dp"
+        android:onClick="disConnectSocket"
+        android:text="断开socket"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
