@@ -1,4 +1,5 @@
 # IM-Middleware
+![image](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4cbf6d5bac74474f9296e381bd840fed~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp)
 本项目是一个基于多进程的Android IM即时通信中间件，旨在帮助Android开发者了解如何在实现IM即时通信的同时，提高应用程序的稳定性和安全性。
 
 通过本项目，您将了解到多进程在Android IM即时通信中的重要性，并学习到如何设计和实现一个基于WebSocket的中间件。我们将深入讲解多进程架构和流程设计，并展示详细的时序图和类图，让您更好地理解该中间件的实现过程。
