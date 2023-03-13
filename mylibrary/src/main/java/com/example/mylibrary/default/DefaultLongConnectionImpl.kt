@@ -1,32 +1,31 @@
-package com.example.mylibrary.manager
+package com.example.mylibrary.default
 
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import com.example.mylibrary.IMClient
 import com.example.mylibrary.entities.IMLoginStatus
 import com.example.mylibrary.entities.IMParams
 import com.example.mylibrary.entities.MessageModel
+import com.example.mylibrary.interfaces.LongConnectionService
+import com.example.mylibrary.manager.IMLoginManager
+import com.example.mylibrary.manager.IMMessageReceiveManager
 import com.example.mylibrary.utils.Logger
-import kotlinx.coroutines.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import okhttp3.*
 import okio.ByteString
 import java.util.concurrent.TimeUnit
 
-
 /**
- *
- * @author: kpa
- * @date: 2023/3/7
- * @description: socket 管理器
+ * Create by kpa(billkp@yeah.net) on 2023/3/13
+ * 17:44
+ * Describe ：注释说明信息
  */
-internal object WebSocketManager {
-    private const val WS_URL = "ws://192.168.31.222:8080"
-    private const val heartbeatInterval = 30000L
-    private var isAuthorized = false
-    private var imParams: IMParams? = null
+class DefaultLongConnectionImpl(private val mContext: Context) : LongConnectionService {
     private val httpClient by lazy {
         OkHttpClient().newBuilder()
             .readTimeout(10, TimeUnit.SECONDS)
@@ -38,8 +37,20 @@ internal object WebSocketManager {
     }
 
     private var mWebSocket: WebSocket? = null
+    private val WS_URL = "ws://192.168.31.222:8080"
+    private val heartbeatInterval = 30000L
+    private var isAuthorized = false
+    private var imParams: IMParams? = null
 
-    public fun connect() {
+    override fun initLongConnection() {
+
+    }
+
+    fun release() {
+        disConnect()
+    }
+
+    override fun connect() {
         if (imParams != null) {
             val request = Request.Builder()
                 .url(WS_URL)
@@ -48,15 +59,19 @@ internal object WebSocketManager {
         }
     }
 
-    fun login(imParams: IMParams) {
-        WebSocketManager.imParams = imParams
+    override fun disConnect() {
+        mWebSocket?.close(1000, "Disconnect")
     }
 
-    fun release() {
-        disconnect()
+    override fun reConnect() {
+        TODO("Not yet implemented")
     }
 
-    fun sendMessage(message: String) {
+    override fun initLoginParams(imParams: IMParams) {
+        this.imParams = imParams
+    }
+
+    override fun sendMessage(message: String) {
         if (mWebSocket != null) {
             mWebSocket?.send(message)
         } else {
@@ -69,10 +84,6 @@ internal object WebSocketManager {
             }
             IMMessageReceiveManager.onReceive(messageModel)
         }
-    }
-
-    fun disconnect() {
-        mWebSocket?.close(1000, "Disconnect")
     }
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -92,6 +103,39 @@ internal object WebSocketManager {
                 }
             }
         }
+    }
+
+    override fun registerNetwork(applicationContext: Context) {
+        val connectivityManager: ConnectivityManager =
+            applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+    }
+
+    private val networkRequest = NetworkRequest.Builder()
+        .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+        .build()
+
+    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
+        override fun onAvailable(network: Network) {
+            // 网络连接成功时执行
+            connectWebSocket() // 重连 WebSocket
+        }
+
+        override fun onLost(network: Network) {
+            // 网络连接断开时执行
+            closeWebSocket() // 关闭 WebSocket
+        }
+    }
+
+    private fun connectWebSocket() {
+        // 连接 WebSocket 的代码
+        connect()
+    }
+
+    private fun closeWebSocket() {
+        // 关闭 WebSocket 的代码
+        disConnect()
     }
 
     private val wsListener = object : WebSocketListener() {
@@ -169,38 +213,4 @@ internal object WebSocketManager {
             IMMessageReceiveManager.onReceive(messageModel)
         }
     }
-
-    fun registerNetwork(applicationContext: Context) {
-        val connectivityManager: ConnectivityManager =
-            applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
-    }
-
-    private val networkRequest = NetworkRequest.Builder()
-        .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
-        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-        .build()
-
-    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network) {
-            // 网络连接成功时执行
-            connectWebSocket() // 重连 WebSocket
-        }
-
-        override fun onLost(network: Network) {
-            // 网络连接断开时执行
-            closeWebSocket() // 关闭 WebSocket
-        }
-    }
-
-    private fun connectWebSocket() {
-        // 连接 WebSocket 的代码
-        connect()
-    }
-
-    private fun closeWebSocket() {
-        // 关闭 WebSocket 的代码
-        disconnect()
-    }
-
 }

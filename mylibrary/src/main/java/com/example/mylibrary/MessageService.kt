@@ -12,7 +12,6 @@ import com.example.mylibrary.listener.IMLoginStatusReceiver
 import com.example.mylibrary.listener.IMMessageReceiver
 import com.example.mylibrary.manager.IMLoginManager
 import com.example.mylibrary.manager.IMMessageReceiveManager
-import com.example.mylibrary.manager.WebSocketManager
 import com.example.mylibrary.utils.Logger
 
 /**
@@ -49,24 +48,24 @@ internal class MessageService : Service() {
             override fun sendOrder(order: Int) {
                 when (order) {
                     IMClientOrder.CONNECT.ordinal -> {
-                        WebSocketManager.connect()
+                        IMClient.with().getLongConnection().connect()
                     }
                     IMClientOrder.DISCONNECT.ordinal -> {
-                        WebSocketManager.release()
+                        IMClient.with().getLongConnection().disConnect()
                     }
                 }
             }
 
             override fun login(imParams: IMParams?) {
                 if (imParams != null) {
-                    WebSocketManager.login(imParams)
+                    IMClient.with().getLongConnection().initLoginParams(imParams)
                 } else {
                     throw NullPointerException("imParams is null")
                 }
             }
 
             override fun sendMessage(message: String?) {
-                message?.let { WebSocketManager.sendMessage(it) }
+                message?.let { IMClient.with().getLongConnection().sendMessage(it) }
             }
 
             override fun registerMessageReceiveListener(messageReceiver: IMMessageReceiver?) {
@@ -91,7 +90,7 @@ internal class MessageService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        WebSocketManager.registerNetwork(this)
+        IMClient.with().getLongConnection().registerNetwork(this)
         Logger.log("Service 启动")
     }
 

@@ -19,7 +19,9 @@ object IMCore {
      */
     fun init(application: Application) {
         Logger.log("IM 初始化")
-        IMClient.init(
+        IMClient.Builder()
+            .build()
+        IMClient.with().init(
             application,
             IMParams.Builder()
                 .withToken("auth")
@@ -47,7 +49,7 @@ object IMCore {
      * 发送消息
      */
     fun send(message: String) {
-        IMClient.send(message)
+        IMClient.with().send(message)
     }
 
 
@@ -55,6 +57,6 @@ object IMCore {
      * 登出
      */
     fun logOut() {
-        IMClient.loginOut()
+        IMClient.with().loginOut()
     }
 }

@@ -7,9 +7,12 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.os.RemoteCallbackList
+import com.example.mylibrary.default.DefaultWebsocketFactory
 import com.example.mylibrary.entities.IMClientOrder
 import com.example.mylibrary.entities.IMParams
 import com.example.mylibrary.entities.MessageModel
+import com.example.mylibrary.factory.IMLongConnectionFactory
+import com.example.mylibrary.interfaces.LongConnectionService
 import com.example.mylibrary.listener.IMLoginStatusReceiver
 import com.example.mylibrary.listener.IMMessageReceiver
 import com.example.mylibrary.utils.Logger
@@ -18,9 +21,33 @@ import com.example.mylibrary.utils.Logger
  *
  * @author: kpa
  * @date: 2023/2/22
- * @description:
+ * @description: IM client 对APP提供所有功能
  */
-object IMClient {
+class IMClient private constructor(builder: Builder) {
+
+    private var mApplication: Context? = null
+
+    private var messageSender: IMessageProvider? = null
+
+    private var mReceiver: IMMessageReceiver.Stub? = null
+
+    private var imParams: IMParams? = null
+
+    private var loginCallback: IMLoginStatusReceiver.Stub? = null
+
+    private var longConnectionFactory: IMLongConnectionFactory<LongConnectionService>? = null
+
+    internal fun getLongConnection(): LongConnectionService {
+        if (longConnectionFactory == null || mApplication == null) {
+            throw NullPointerException("longConnectionFactory || mApplication 为空")
+        }
+        return longConnectionFactory!!.createLongConnection(mApplication!!.applicationContext)
+
+    }
+
+    init {
+        longConnectionFactory = builder.getFactory()
+    }
 
     private val deathRecipient by lazy {
         object : IBinder.DeathRecipient {
@@ -34,18 +61,57 @@ object IMClient {
             }
         }
     }
-    var mApplication: Context? = null
 
-    private var messageSender: IMessageProvider? = null
-
-    internal var mReceiver: IMMessageReceiver.Stub? = null
-
-    private var imParams: IMParams? = null
-
-    internal var loginCallback: IMLoginStatusReceiver.Stub? = null
+    companion object {
+        @Volatile
+        private lateinit var mInstance: IMClient
 
 
-    @JvmStatic
+        fun isInstalled() = this::mInstance.isInitialized
+
+        @JvmStatic
+        private fun init(imClient: IMClient): IMClient {
+            synchronized(IMClient::class) {
+                if (!isInstalled()) {
+                    mInstance = imClient
+                } else {
+                    throw RuntimeException("已经初始化")
+                }
+            }
+            return mInstance;
+        }
+
+        @JvmStatic
+        fun with(): IMClient {
+            if (isInstalled()) {
+                throw RuntimeException("未初始化")
+            }
+            return mInstance;
+        }
+
+
+    }
+
+    public class Builder {
+        private var mFactory: IMLongConnectionFactory<LongConnectionService>? = null
+
+
+        public fun withFactory(factory: IMLongConnectionFactory<LongConnectionService>) = apply {
+            this.mFactory = factory
+        }
+
+        fun getFactory(): IMLongConnectionFactory<LongConnectionService> {
+            if (mFactory == null) {
+                mFactory = DefaultWebsocketFactory.create()
+            }
+            return mFactory!!
+        }
+
+        public fun build(): IMClient {
+            return init(IMClient(this))
+        }
+    }
+
     fun init(
         application: Application,
         imParams: IMParams,
@@ -71,7 +137,7 @@ object IMClient {
         messageSender?.sendOrder(IMClientOrder.DISCONNECT.ordinal)
     }
 
-    @JvmStatic
+
     fun loginOut() {
         messageSender?.run {
             if (this.asBinder().isBinderAlive) {

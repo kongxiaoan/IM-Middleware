@@ -66,3 +66,247 @@ Android 进程并不是一个静态的概念，它的状态是动态变化的。
    如下图（箭头方向为依赖方向）
 
 具体文章请看： https://juejin.cn/post/7208023562807459896
+
+
+## 剥离长连接，让组件职责更单一
+
+在Android [IM即时通信多进程中间件设计与实现](https://juejin.cn/post/7208023562807459896) 一文中主要的点有两个
+
+1. 多进程完成客户端和服务端的通信
+2. 通信的介质
+
+## 让SDK更通用
+
+整个实现中其实我是不Core你到底使用websocket还是自己撸的TCP还是其他，我关心的是多进程中间件的实现。
+
+所以我们要做一个设计，我希望在我的整个Demo 中不关心长链接的具体实现，但是我能在Demo 对整个长连接进行管理、使用，我的目标是：
+
+1. 在使用Demo时不需要考虑长连接的实现方式
+2. 在任何已经存在的长连接代码中，此Demo 均能实现其多进程中间件的职责
+
+这样设计的优势在哪里？
+
+1. 可以更多的作为一个开放平台
+2. 不管以后发展中出现多牛逼的长连接方式，都不影响我们的业务
+
+这个设计会具备以下特点
+
+1. 涉及核⼼功能统⼀管理升级；
+2. 保证核⼼功能具备⾼灵活替换性；
+3. Demo与长连接框架完全剥离，项⽬⾯向中间层编码，⽆须了解实际实现SDK
+
+## 物理结构
+
+中间件形成独⽴SDK，项⽬⾯向图⽚加载框架编码，所有功能统⼀管理；依赖关系⻅下图：
+
+![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0be76bda9a3c408f832b10dab1950cc5~tplv-k3u1fbpfcp-watermark.image?)
+
+## 多进程中间件
+
+当前的组件设计核⼼思想是彻底弱化**长连接**在项⽬中的定义，达到项⽬直接与IMClient接触，终极⽬标是项⽬只知道IMClient⽽不知道长连接，所以整体SDK呈现出了如下图的组件架构模式：
+可以包含了多个不同的组件
+
+![image.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d4c42b425a894c66b765cca2be7eb8d6~tplv-k3u1fbpfcp-watermark.image?)
+
+## 具体实现
+
+### 使用依赖反转原则进行高层逻辑实现
+
+
+1. LongConnectService
+
+```kotlin
+/**
+ * Create by kpa(billkp@yeah.net) on 2023/3/13
+ * 16:58
+ * Describe ：整个实现中其实我是不Core你到底使用websocket还是自己撸的TCP还是其他，
+ * 我关心的是多进程中间件的实现。所以我们对这部分做一个
+ * 抽象连接器
+ */
+interface LongConnectionService {
+    /**
+     * 初始化长连接实例
+     */
+    fun initLongConnection()
+
+    /**
+     * 连接长连接
+     */
+    fun connect()
+
+    /**
+     * 断开长连接
+     */
+    fun disConnect()
+
+    /**
+     * 重新连接长连接
+     */
+    fun reConnect()
+
+}
+```
+
+然后我们使用抽象工厂模式提供对长连接器的统一创建
+
+
+![image.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ac1515339b8b42bfb482bdb2224c0653~tplv-k3u1fbpfcp-watermark.image?)
+
+### 修改中间件IMClient
+
+对于SDK⽽⾔，长连接器操作、配置等，需要提供统⼀的配置类以供APP进⾏配，可使用Builder模式，封装其职责，总的来说他将变为APP对其配置和操作的工具
+
+```
+class IMClient private constructor(builder: Builder) {
+
+  
+    private var longConnectionFactory: IMLongConnectionFactory<LongConnectionService>? = null
+
+    init {
+        longConnectionFactory = builder.getFactory()
+    }
+
+    //...
+    companion object {
+        @Volatile
+        private lateinit var mInstance: IMClient
+
+
+        fun isInstalled() = this::mInstance.isInitialized
+
+        @JvmStatic
+        fun init(imClient: IMClient): IMClient {
+            synchronized(IMClient::class) {
+                if (!isInstalled()) {
+                    mInstance = imClient
+                } else {
+                    throw RuntimeException("已经初始化")
+                }
+            }
+            return mInstance;
+        }
+
+        @JvmStatic
+        fun with(): IMClient {
+            if (isInstalled()) {
+                throw RuntimeException("未初始化")
+            }
+            return mInstance;
+        }
+
+
+    }
+
+    class Builder {
+        private var mFactory: IMLongConnectionFactory<LongConnectionService>? = null
+
+
+        fun withFactory(factory: IMLongConnectionFactory<LongConnectionService>) = apply {
+            this.mFactory = factory
+        }
+
+//如果不设置长连接器，将默认本Demo 中的DefaultWebsocketFactory
+        fun getFactory(): IMLongConnectionFactory<LongConnectionService> {
+            if (mFactory == null) {
+                mFactory = DefaultWebsocketFactory.create()
+            }
+            return mFactory!!
+        }
+
+        fun build(): IMClient {
+            return init(IMClient(this))
+        }
+    }
+
+    //...
+
+}
+```
+
+### 中间件使用
+```
+
+// Context of the app under test.
+val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+// 初始化
+IMClient.Builder()
+    .withFactory(DefaultWebsocketFactory.create()).build()
+
+// 使用
+IMClient.with().connect()
+IMClient.with().send("我是发送的消息内容")
+```
+
+### 怎么接入自己的长连接代码
+
+通过上面的类图，相信大家已经知道怎么接入了。
+
+1. 实现LongConnectionService 高级抽象
+```
+class DefaultLongConnectionImpl(private val mContext: Context) : LongConnectionService {
+    override fun initLongConnection() {
+        TODO("Not yet implemented")
+    }
+
+    override fun connect() {
+        TODO("Not yet implemented")
+    }
+
+    override fun disConnect() {
+        TODO("Not yet implemented")
+    }
+
+    override fun reConnect() {
+        TODO("Not yet implemented")
+    }
+}
+```
+2. 创建对应的工厂创建器
+```
+class DefaultWebsocketFactory : IMLongConnectionFactory<DefaultLongConnectionImpl>() {
+
+    companion object {
+        @JvmStatic
+        fun create(): DefaultWebsocketFactory {
+            return DefaultWebsocketFactory()
+        }
+    }
+
+    override fun createLongConnection(context: Context): DefaultLongConnectionImpl {
+        return DefaultLongConnectionImpl(context)
+    }
+}
+```
+
+### 详细的流程设计
+
+
+![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0d0d6d412c3447b0910a5db5ff0e67d3~tplv-k3u1fbpfcp-watermark.image?)
+
+### 拒绝侵入三方SDK，让你的业务独立起来
+在⽅案设计中，完成了项⽬与IMClient 的连接，也设计了核⼼长连接的的切换、功能抽象等⼯作，但是还存在以下问题：
+
+1. 长连接的代码对于使用自己代码的同学，他是对于的无用的
+2. 组件的职责不明确
+
+但是处理方式极其简单，我们只需要将抽象的高层逻辑部分移动到其他组件中，在组件层面，也就是代码仓库中隔离开，这将不再存在以上问题。
+
+## 总结
+
+这种设计方式在开发中应用场景众多，基本上所有使用第三方组件的场景都应该按照如此设计，这样既能保证业务不受侵害，在将来业务走上正轨也不影响你替换组件，这样我们就做到了：
+
+
+1. 控制反转
+2. 组件层级分明
+3. 各组件间物理隔离
+4. 根据需求单独打包 (⽐如项⽬研发接⼊了2款长连接框架，上线时只需要其中之一，即将需要的进⾏物
+   理依赖，其他的取消依赖即可)
+5. 去除IMClinet中⼼化，多⼈开发不受影响(开发中间件和长连接将变成两个业务)
+6. 提升了组件稳定性
+
+当然，组件的业务复杂程度不是我关心的，但是大家可以进行提取，丰富自己的业务。
+
+
+
+
+
