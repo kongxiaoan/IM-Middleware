@@ -1,10 +1,11 @@
-package com.example.mylibrary
+package com.example.mylibrary.manager
 
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import com.example.mylibrary.IMClient
 import com.example.mylibrary.entities.IMLoginStatus
 import com.example.mylibrary.entities.IMParams
 import com.example.mylibrary.entities.MessageModel
@@ -19,11 +20,11 @@ import java.util.concurrent.TimeUnit
  *
  * @author: kpa
  * @date: 2023/3/7
- * @description:
+ * @description: socket 管理器
  */
-object WebSocketManager {
+internal object WebSocketManager {
     private const val WS_URL = "ws://192.168.31.222:8080"
-    private val heartbeatInterval = 30000L
+    private const val heartbeatInterval = 30000L
     private var isAuthorized = false
     private var imParams: IMParams? = null
     private val httpClient by lazy {
@@ -39,7 +40,7 @@ object WebSocketManager {
     private var mWebSocket: WebSocket? = null
 
     public fun connect() {
-        if(imParams != null) {
+        if (imParams != null) {
             val request = Request.Builder()
                 .url(WS_URL)
                 .build()
@@ -48,7 +49,7 @@ object WebSocketManager {
     }
 
     fun login(imParams: IMParams) {
-        this.imParams = imParams
+        WebSocketManager.imParams = imParams
     }
 
     fun release() {
@@ -66,7 +67,7 @@ object WebSocketManager {
                 to = "client"
                 content = "socket未连接"
             }
-            IMClient.onReceive(messageModel)
+            IMMessageReceiveManager.onReceive(messageModel)
         }
     }
 
@@ -74,6 +75,7 @@ object WebSocketManager {
         mWebSocket?.close(1000, "Disconnect")
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun startHeartbeat(webSocket: WebSocket) {
         GlobalScope.launch {
             while (true) {
@@ -123,7 +125,7 @@ object WebSocketManager {
                 to = "client"
                 content = text
             }
-            IMClient.onReceive(messageModel)
+            IMMessageReceiveManager.onReceive(messageModel)
         }
 
         override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
@@ -139,8 +141,8 @@ object WebSocketManager {
                 content = reason
             }
             isAuthorized = false
-            IMClient.onReceive(messageModel)
-            IMClient.sendLoginStatus(IMLoginStatus.CONNECT_FAIL.ordinal)
+            IMMessageReceiveManager.onReceive(messageModel)
+            IMLoginManager.sendLoginStatus(IMLoginStatus.CONNECT_FAIL.ordinal)
         }
 
         override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
@@ -151,20 +153,20 @@ object WebSocketManager {
                 to = "client"
                 content = reason
             }
-            IMClient.onReceive(messageModel)
-            IMClient.sendLoginStatus(IMLoginStatus.CONNECT_FAIL.ordinal)
+            IMMessageReceiveManager.onReceive(messageModel)
+            IMLoginManager.sendLoginStatus(IMLoginStatus.CONNECT_FAIL.ordinal)
         }
 
         override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
             super.onFailure(webSocket, t, response)
             isAuthorized = false
-            IMClient.sendLoginStatus(IMLoginStatus.CONNECT_FAIL.ordinal)
+            IMLoginManager.sendLoginStatus(IMLoginStatus.CONNECT_FAIL.ordinal)
             val messageModel = MessageModel().apply {
                 from = "service"
                 to = "client"
                 content = t.message
             }
-            IMClient.onReceive(messageModel)
+            IMMessageReceiveManager.onReceive(messageModel)
         }
     }
 
@@ -174,12 +176,12 @@ object WebSocketManager {
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
     }
 
-    val networkRequest = NetworkRequest.Builder()
+    private val networkRequest = NetworkRequest.Builder()
         .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
         .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
         .build()
 
-    val networkCallback = object : ConnectivityManager.NetworkCallback() {
+    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
             // 网络连接成功时执行
             connectWebSocket() // 重连 WebSocket

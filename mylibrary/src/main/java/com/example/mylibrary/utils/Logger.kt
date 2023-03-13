@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
  * @date: 2023/2/22
  * @description:
  */
-object Logger {
+internal object Logger {
 
     const val TAG = "IM_LOGGER"
 

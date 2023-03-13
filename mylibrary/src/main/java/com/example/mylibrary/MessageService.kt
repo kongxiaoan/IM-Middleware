@@ -5,12 +5,15 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.IBinder
 import android.os.Parcel
+import com.example.mylibrary.entities.IMClientOrder
 import com.example.mylibrary.entities.IMLoginStatus
 import com.example.mylibrary.entities.IMParams
 import com.example.mylibrary.listener.IMLoginStatusReceiver
 import com.example.mylibrary.listener.IMMessageReceiver
+import com.example.mylibrary.manager.IMLoginManager
+import com.example.mylibrary.manager.IMMessageReceiveManager
+import com.example.mylibrary.manager.WebSocketManager
 import com.example.mylibrary.utils.Logger
-import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  *
@@ -18,10 +21,9 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @date: 2023/2/22
  * @description:
  */
-class MessageService : Service() {
+internal class MessageService : Service() {
 
-    private val serviceStop: AtomicBoolean = AtomicBoolean()
-    override fun onBind(intent: Intent?): IBinder? {
+    override fun onBind(intent: Intent?): IBinder {
         if (checkCallingOrSelfPermission("com.example.mylibrary.permission.REMOTE_SERVICE_PERMISSION") == PackageManager.PERMISSION_DENIED) {
             throw RuntimeException("非法调用, 未添加正确权限")
         }
@@ -46,10 +48,10 @@ class MessageService : Service() {
 
             override fun sendOrder(order: Int) {
                 when (order) {
-                    0 -> {
+                    IMClientOrder.CONNECT.ordinal -> {
                         WebSocketManager.connect()
                     }
-                    1 -> {
+                    IMClientOrder.DISCONNECT.ordinal -> {
                         WebSocketManager.release()
                     }
                 }
@@ -68,20 +70,20 @@ class MessageService : Service() {
             }
 
             override fun registerMessageReceiveListener(messageReceiver: IMMessageReceiver?) {
-                IMClient.registerReceiver(messageReceiver)
+                IMMessageReceiveManager.registerReceiver(messageReceiver)
             }
 
             override fun unRegisterMessageReceiveListener(messageReceiver: IMMessageReceiver?) {
-                IMClient.unRegisterReceiver(messageReceiver)
+                IMMessageReceiveManager.unRegisterReceiver(messageReceiver)
             }
 
             override fun registerLoginReceiveListener(loginStatusReceiver: IMLoginStatusReceiver?) {
-                IMClient.registerLoginStatus(loginStatusReceiver)
-                IMClient.sendLoginStatus(IMLoginStatus.CONNECT_DEFAULT.ordinal)
+                IMLoginManager.registerLoginStatus(loginStatusReceiver)
+                IMLoginManager.sendLoginStatus(IMLoginStatus.CONNECT_DEFAULT.ordinal)
             }
 
             override fun unRegisterLoginReceiveListener(loginStatusReceiver: IMLoginStatusReceiver?) {
-                IMClient.unRegisterLoginStatus(loginStatusReceiver)
+                IMLoginManager.unRegisterLoginStatus(loginStatusReceiver)
             }
 
         }

@@ -44,43 +44,6 @@ object IMClient {
 
     internal var loginCallback: IMLoginStatusReceiver.Stub? = null
 
-    private val mListListener: RemoteCallbackList<IMMessageReceiver> = RemoteCallbackList()
-
-    private val mLoginListListener: RemoteCallbackList<IMLoginStatusReceiver> = RemoteCallbackList()
-
-    internal fun registerReceiver(messageReceiver: IMMessageReceiver?) {
-        mListListener.register(messageReceiver)
-    }
-
-    internal fun unRegisterReceiver(messageReceiver: IMMessageReceiver?) {
-        mListListener.unregister(messageReceiver)
-    }
-
-    internal fun registerLoginStatus(loginStatus: IMLoginStatusReceiver?) {
-        mLoginListListener.register(loginStatus)
-    }
-
-    internal fun unRegisterLoginStatus(loginStatus: IMLoginStatusReceiver?) {
-        mLoginListListener.unregister(loginStatus)
-    }
-
-    fun onReceive(messageModel: MessageModel) {
-        val listenerCount = mListListener.beginBroadcast()
-        for (i in 0 until listenerCount) {
-            mListListener.getBroadcastItem(i)?.onMessageReceived(messageModel)
-        }
-        mListListener.finishBroadcast()
-    }
-
-
-    fun sendLoginStatus(status: Int) {
-        val listenerCount = mLoginListListener.beginBroadcast()
-        for (i in 0 until listenerCount) {
-            mLoginListListener.getBroadcastItem(i)?.loginStatus(status)
-        }
-        mLoginListListener.finishBroadcast()
-    }
-
 
     @JvmStatic
     fun init(
