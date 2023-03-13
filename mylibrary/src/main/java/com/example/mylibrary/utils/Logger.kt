@@ -7,9 +7,9 @@ import androidx.lifecycle.MutableLiveData
  *
  * @author: kpa
  * @date: 2023/2/22
- * @description:
+ * @description: 日志将提供腾讯的xlog 进行IM详细的单独存储
  */
-internal object Logger {
+object Logger {
 
     const val TAG = "IM_LOGGER"
 
