@@ -1,0 +1,25 @@
+syntax = "proto3";
+package com.example.mylibrary;
+
+
+enum IMClientCMDEnum {
+  NONE_CMD = 0;
+  //系统消息
+  SYS_MSG_CMD = 2000;
+  //文本单聊
+  CHAT_TXT_CMD = 2001;
+  //图片单聊
+  CHAT_IMG_CMD = 2003;
+  //关注消息
+  FOLLOW_MSG_CMD = 2004;
+}
+
+//平台消息类型
+enum PlatformMsgType {
+  //用户消息
+  USER_MSG_TYPE = 0;
+  //系统消息
+  SYS_MSG_TYPE = 1;
+  //客服消息
+  CUSTOMER_MSG_TYPE = 2;
+}

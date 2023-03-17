@@ -66,26 +66,13 @@ class DefaultLongConnectionImpl : ILongConnectionService.Stub() {
         this.imParams = imParams
     }
 
-    override fun sendMessage(message: String) {
-        if (mWebSocket != null) {
-            mWebSocket?.send(message)
-        } else {
-            // WebSocket 未连接
-            // 处理未连接时的情况
-            val messageModel = MessageModel().apply {
-                from = "service"
-                to = "client"
-                content = "socket未连接"
-            }
-            IMMessageReceiveManager.onReceive(messageModel)
-        }
-    }
-
     /**
-     * 注册网络监听
+     * 发送消息
      */
-    override fun registerNetwork() {
-
+    override fun sendMessage(sendMessage: ByteArray) {
+        if (mWebSocket != null) {
+            mWebSocket?.send(okio.ByteString.of(*sendMessage))
+        }
     }
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -107,7 +94,6 @@ class DefaultLongConnectionImpl : ILongConnectionService.Stub() {
             }
         }
     }
-
 
 
     private val wsListener = object : WebSocketListener() {
@@ -141,7 +127,7 @@ class DefaultLongConnectionImpl : ILongConnectionService.Stub() {
                 to = "client"
                 content = text
             }
-            IMMessageReceiveManager.onReceive(messageModel)
+//            IMMessageReceiveManager.onReceive(messageModel)
         }
 
         override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
@@ -157,7 +143,7 @@ class DefaultLongConnectionImpl : ILongConnectionService.Stub() {
                 content = reason
             }
             isAuthorized = false
-            IMMessageReceiveManager.onReceive(messageModel)
+//            IMMessageReceiveManager.onReceive(messageModel)
             IMLoginManager.sendLoginStatus(IMLoginStatus.CONNECT_FAIL.ordinal)
         }
 
@@ -169,7 +155,7 @@ class DefaultLongConnectionImpl : ILongConnectionService.Stub() {
                 to = "client"
                 content = reason
             }
-            IMMessageReceiveManager.onReceive(messageModel)
+//            IMMessageReceiveManager.onReceive(messageModel)
             IMLoginManager.sendLoginStatus(IMLoginStatus.CONNECT_FAIL.ordinal)
         }
 
@@ -182,7 +168,7 @@ class DefaultLongConnectionImpl : ILongConnectionService.Stub() {
                 to = "client"
                 content = t.message
             }
-            IMMessageReceiveManager.onReceive(messageModel)
+//            IMMessageReceiveManager.onReceive(messageModel)
         }
     }
 }

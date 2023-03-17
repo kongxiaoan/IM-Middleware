@@ -1,0 +1,43 @@
+syntax = "proto3";
+package com.example.mylibrary;
+
+message IMClientMessage {
+  // 发送人id
+  string sendId = 1;
+  // 接收人id
+  string chatWithId = 2;
+  // 发送时间
+  int64 sendTime = 3;
+  // 消息版本 服务端做消息唯一处理
+  int64 version = 4;
+  // 客户端消息唯一标识
+  int64 msgId = 6;
+  // 区分消息的所属类型 比如系统消息还是用户消息
+  int32 type = 7;
+  // 消息类型 根据此类型
+  int32 cmd = 8;
+  // 包含的消息体 type 消息和cmd 同时作用可过滤唯一消息
+  bytes body = 9;
+}
+
+// 文本
+message TextMessage {
+  string content = 1;
+}
+
+// 图片
+message ImageMessage {
+  string url = 1;
+  //图片后缀
+  string prefix = 2;
+  //原图宽
+  int32 origWight = 3;
+  //原图高
+  int32 origHeight = 4;
+  //原图大小
+  int64 origSize = 5;
+  //中等缩略图片url
+  string midUrl = 6;
+  //模糊图片地址
+  string blurryImUrl = 7;
+}

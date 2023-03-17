@@ -1,7 +1,32 @@
 plugins {
     id 'com.android.library'
+    id 'kotlin-android'
     id 'org.jetbrains.kotlin.android'
+}
+apply plugin: 'com.google.protobuf'
 
+protobuf{
+    protoc{
+        artifact = 'com.google.protobuf:protoc:3.7.0'
+    }
+    plugins {
+        javalite {
+            // The codegen for lite comes as a separate artifact
+            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                // In most cases you don't need the full Java output
+                // if you use the lite output.
+                remove java
+            }
+            task.builtins {
+                java {}
+            }
+        }
+    }
 }
 
 android {
@@ -33,10 +58,13 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     testImplementation 'junit:junit:4.13.2'
-    implementation 'androidx.core:core:1.7.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    implementation "org.java-websocket:Java-WebSocket:1.4.0"
     implementation "com.squareup.okhttp3:okhttp:4.9.3"
+    implementation 'com.google.protobuf:protobuf-java:3.18.1'
 
+}
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }

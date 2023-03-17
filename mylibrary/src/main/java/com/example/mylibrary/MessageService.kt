@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Bundle
 import android.os.IBinder
 import android.os.Parcel
 import com.example.mylibrary.entities.IMClientOrder
@@ -49,6 +50,10 @@ internal class MessageService : Service() {
                 return super.onTransact(code, data, reply, flags)
             }
 
+            override fun sendMessage(message: ByteArray) {
+                mILongConnectionService?.sendMessage(message)
+            }
+
             override fun sendOrder(order: Int) {
                 when (order) {
                     IMClientOrder.CONNECT.ordinal -> {
@@ -66,10 +71,6 @@ internal class MessageService : Service() {
                 } else {
                     throw NullPointerException("imParams is null")
                 }
-            }
-
-            override fun sendMessage(message: String?) {
-                message?.let { mILongConnectionService?.sendMessage(it) }
             }
 
             override fun registerMessageReceiveListener(messageReceiver: IMMessageReceiver?) {
@@ -105,30 +106,6 @@ internal class MessageService : Service() {
         Logger.log("Service 启动")
     }
 
-    /**
-     * 模拟长链接，通知客户端消息
-     */
-//    inner class FakeTCPTask : Runnable {
-//
-//        override fun run() {
-//            while (!serviceStop.get()) {
-//                Thread.sleep(5000)
-//                val messageModel = MessageModel().apply {
-//                    from = "service"
-//                    to = "client"
-//                    content = "${System.currentTimeMillis()}"
-//                }
-//                val listenerCount = mListListener.beginBroadcast()
-//                Logger.log("listener count = $listenerCount")
-//                for (i in 0 until listenerCount) {
-//                    mListListener.getBroadcastItem(i)?.onMessageReceived(messageModel)
-//                }
-//                mListListener.finishBroadcast()
-//            }
-//        }
-//
-//    }
-//
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         return START_STICKY // 或者返回 START_REDELIVER_INTENT
     }

@@ -40,7 +40,6 @@ class IMClient private constructor(builder: Builder) {
             throw NullPointerException("longConnectionFactory || mApplication 为空")
         }
         return longConnectionFactory!!.createLongConnection()
-
     }
 
     init {
@@ -135,7 +134,7 @@ class IMClient private constructor(builder: Builder) {
         setupService()
     }
 
-    fun send(message: String) {
+    fun send(message: ByteArray) {
         messageSender?.sendMessage(message)
     }
 

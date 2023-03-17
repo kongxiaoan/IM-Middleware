@@ -9,7 +9,7 @@ import com.example.mylibrary.listener.IMLoginStatusReceiver;
 import com.example.mylibrary.listener.ILongConnectionService;
 
 interface IMessageProvider{
-    void sendMessage(String message);
+    void sendMessage(in byte[] message);
 
     void sendOrder(int order);
 

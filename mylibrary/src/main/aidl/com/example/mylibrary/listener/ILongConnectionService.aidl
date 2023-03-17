@@ -33,11 +33,6 @@ interface ILongConnectionService {
         /**
          * 发送消息
          */
-        void sendMessage(String message);
-
-        /**
-         * 注册网络监听
-         */
-        void registerNetwork();
+        void sendMessage(in byte[] sendMessage);
 
 }
