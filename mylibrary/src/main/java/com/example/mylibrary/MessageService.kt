@@ -1,6 +1,7 @@
 package com.example.mylibrary
 
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.IBinder
@@ -13,6 +14,7 @@ import com.example.mylibrary.listener.IMLoginStatusReceiver
 import com.example.mylibrary.listener.IMMessageReceiver
 import com.example.mylibrary.manager.IMLoginManager
 import com.example.mylibrary.manager.IMMessageReceiveManager
+import com.example.mylibrary.manager.NetworkManager
 import com.example.mylibrary.utils.Logger
 
 /**
@@ -79,6 +81,7 @@ internal class MessageService : Service() {
             }
 
             override fun registerLoginReceiveListener(loginStatusReceiver: IMLoginStatusReceiver?) {
+                Logger.log("注册进程 ${Logger.getCurrentProcessName(this@MessageService)}")
                 IMLoginManager.registerLoginStatus(loginStatusReceiver)
                 IMLoginManager.sendLoginStatus(IMLoginStatus.CONNECT_DEFAULT.ordinal)
             }
@@ -89,8 +92,10 @@ internal class MessageService : Service() {
 
             override fun bindLongConnectionService(service: com.example.mylibrary.listener.ILongConnectionService?) {
                 mILongConnectionService = service
-                Logger.log("长链接服务 ${service}")
-                mILongConnectionService?.registerNetwork()
+                service?.initLongConnection()
+                if (service != null) {
+                    NetworkManager.register(this@MessageService, service)
+                }
             }
         }
     }

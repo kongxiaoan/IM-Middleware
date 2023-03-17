@@ -6,11 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
-import android.os.RemoteCallbackList
 import com.example.mylibrary.default.DefaultWebsocketFactory
 import com.example.mylibrary.entities.IMClientOrder
 import com.example.mylibrary.entities.IMParams
-import com.example.mylibrary.entities.MessageModel
 import com.example.mylibrary.factory.IMLongConnectionFactory
 import com.example.mylibrary.listener.ILongConnectionService
 import com.example.mylibrary.listener.IMLoginStatusReceiver
@@ -41,7 +39,7 @@ class IMClient private constructor(builder: Builder) {
         if (longConnectionFactory == null || mApplication == null) {
             throw NullPointerException("longConnectionFactory || mApplication 为空")
         }
-        return longConnectionFactory!!.createLongConnection(mApplication!!.applicationContext)
+        return longConnectionFactory!!.createLongConnection()
 
     }
 

@@ -1,6 +1,5 @@
 package com.example.mylibrary.factory
 
-import android.content.Context
 import com.example.mylibrary.listener.ILongConnectionService
 
 /**
@@ -10,5 +9,5 @@ import com.example.mylibrary.listener.ILongConnectionService
  *
  */
 abstract class IMLongConnectionFactory<out T : ILongConnectionService.Stub> {
-    abstract fun createLongConnection(context: Context): T
+    abstract fun createLongConnection(): T
 }

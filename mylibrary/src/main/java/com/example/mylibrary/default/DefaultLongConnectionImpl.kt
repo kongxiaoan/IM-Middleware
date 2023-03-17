@@ -1,10 +1,5 @@
 package com.example.mylibrary.default
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
 import com.example.mylibrary.entities.IMLoginStatus
 import com.example.mylibrary.entities.IMParams
 import com.example.mylibrary.entities.MessageModel
@@ -25,7 +20,7 @@ import java.util.concurrent.TimeUnit
  * 17:44
  * Describe ：注释说明信息
  */
-class DefaultLongConnectionImpl(private val mContext: Context) : ILongConnectionService.Stub() {
+class DefaultLongConnectionImpl : ILongConnectionService.Stub() {
     private val httpClient by lazy {
         OkHttpClient().newBuilder()
             .readTimeout(10, TimeUnit.SECONDS)
@@ -37,7 +32,6 @@ class DefaultLongConnectionImpl(private val mContext: Context) : ILongConnection
     }
 
     private var mWebSocket: WebSocket? = null
-    private val WS_URL = "ws://192.168.31.222:8080"
     private val heartbeatInterval = 30000L
     private var isAuthorized = false
     private var imParams: IMParams? = null
@@ -51,9 +45,10 @@ class DefaultLongConnectionImpl(private val mContext: Context) : ILongConnection
     }
 
     override fun connect() {
+        Logger.log("开始连接 ${imParams}")
         if (imParams != null) {
             val request = Request.Builder()
-                .url(WS_URL)
+                .url(imParams!!.url)
                 .build()
             httpClient.newWebSocket(request, wsListener)
         }
@@ -90,9 +85,7 @@ class DefaultLongConnectionImpl(private val mContext: Context) : ILongConnection
      * 注册网络监听
      */
     override fun registerNetwork() {
-        val connectivityManager: ConnectivityManager =
-            mContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+
     }
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -103,6 +96,7 @@ class DefaultLongConnectionImpl(private val mContext: Context) : ILongConnection
                 Logger.log("发送心跳 isAuthorized = $isAuthorized")
                 if (!isAuthorized) {
                     // 如果未经授权，则无法发送心跳
+                    IMLoginManager.sendLoginStatus(IMLoginStatus.CONNECT_FAIL.ordinal)
                     break
                 }
                 if (!webSocket.send("pang")) {
@@ -114,32 +108,7 @@ class DefaultLongConnectionImpl(private val mContext: Context) : ILongConnection
         }
     }
 
-    private val networkRequest = NetworkRequest.Builder()
-        .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
-        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-        .build()
 
-    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network) {
-            // 网络连接成功时执行
-            connectWebSocket() // 重连 WebSocket
-        }
-
-        override fun onLost(network: Network) {
-            // 网络连接断开时执行
-            closeWebSocket() // 关闭 WebSocket
-        }
-    }
-
-    private fun connectWebSocket() {
-        // 连接 WebSocket 的代码
-        connect()
-    }
-
-    private fun closeWebSocket() {
-        // 关闭 WebSocket 的代码
-        disConnect()
-    }
 
     private val wsListener = object : WebSocketListener() {
         override fun onOpen(webSocket: WebSocket, response: Response) {

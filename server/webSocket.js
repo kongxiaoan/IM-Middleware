@@ -23,6 +23,7 @@ wss.on('connection', (ws) => {
             // pang 
         } else {
             console.log(`Received message from authorized client: ${message}`);
+            ws.send("我是服务端，收到了你的消息")
         }
     
     } else {
@@ -45,6 +46,7 @@ wss.on('connection', (ws) => {
 
   // 处理连接关闭
   ws.on('close', () => {
+    console.log("已经断开连接")
     clients.delete(ws);
   });
 

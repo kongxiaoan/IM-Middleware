@@ -24,6 +24,7 @@ object IMCore {
         IMClient.with().init(
             application,
             IMParams.Builder()
+                .withUrl("ws://192.168.31.222:8080")
                 .withToken("auth")
                 .build(),
             object : IMLoginStatusReceiver.Stub() {
