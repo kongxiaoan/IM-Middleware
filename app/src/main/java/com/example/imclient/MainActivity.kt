@@ -56,11 +56,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun connectSocket(view: View) {
-        IMClient.connect()
+        IMClient.with().connect()
     }
 
     fun disConnectSocket(view: View) {
-        IMClient.disConnect()
+        IMClient.with().disConnect()
     }
 
 

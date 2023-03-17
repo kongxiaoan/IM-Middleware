@@ -8,7 +8,7 @@ import android.net.NetworkRequest
 import com.example.mylibrary.entities.IMLoginStatus
 import com.example.mylibrary.entities.IMParams
 import com.example.mylibrary.entities.MessageModel
-import com.example.mylibrary.interfaces.LongConnectionService
+import com.example.mylibrary.listener.ILongConnectionService
 import com.example.mylibrary.manager.IMLoginManager
 import com.example.mylibrary.manager.IMMessageReceiveManager
 import com.example.mylibrary.utils.Logger
@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
  * 17:44
  * Describe ：注释说明信息
  */
-class DefaultLongConnectionImpl(private val mContext: Context) : LongConnectionService {
+class DefaultLongConnectionImpl(private val mContext: Context) : ILongConnectionService.Stub() {
     private val httpClient by lazy {
         OkHttpClient().newBuilder()
             .readTimeout(10, TimeUnit.SECONDS)
@@ -86,6 +86,15 @@ class DefaultLongConnectionImpl(private val mContext: Context) : LongConnectionS
         }
     }
 
+    /**
+     * 注册网络监听
+     */
+    override fun registerNetwork() {
+        val connectivityManager: ConnectivityManager =
+            mContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+    }
+
     @OptIn(DelicateCoroutinesApi::class)
     private fun startHeartbeat(webSocket: WebSocket) {
         GlobalScope.launch {
@@ -103,12 +112,6 @@ class DefaultLongConnectionImpl(private val mContext: Context) : LongConnectionS
                 }
             }
         }
-    }
-
-    override fun registerNetwork(applicationContext: Context) {
-        val connectivityManager: ConnectivityManager =
-            applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
     }
 
     private val networkRequest = NetworkRequest.Builder()

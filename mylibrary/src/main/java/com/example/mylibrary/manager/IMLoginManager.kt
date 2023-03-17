@@ -1,7 +1,6 @@
 package com.example.mylibrary.manager
 
 import android.os.RemoteCallbackList
-import com.example.mylibrary.IMClient
 import com.example.mylibrary.listener.IMLoginStatusReceiver
 
 /**

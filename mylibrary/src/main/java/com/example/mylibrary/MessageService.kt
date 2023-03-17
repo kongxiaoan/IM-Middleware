@@ -8,6 +8,7 @@ import android.os.Parcel
 import com.example.mylibrary.entities.IMClientOrder
 import com.example.mylibrary.entities.IMLoginStatus
 import com.example.mylibrary.entities.IMParams
+import com.example.mylibrary.listener.ILongConnectionService
 import com.example.mylibrary.listener.IMLoginStatusReceiver
 import com.example.mylibrary.listener.IMMessageReceiver
 import com.example.mylibrary.manager.IMLoginManager
@@ -22,6 +23,7 @@ import com.example.mylibrary.utils.Logger
  */
 internal class MessageService : Service() {
 
+    private var mILongConnectionService: ILongConnectionService? = null
     override fun onBind(intent: Intent?): IBinder {
         if (checkCallingOrSelfPermission("com.example.mylibrary.permission.REMOTE_SERVICE_PERMISSION") == PackageManager.PERMISSION_DENIED) {
             throw RuntimeException("非法调用, 未添加正确权限")
@@ -48,24 +50,24 @@ internal class MessageService : Service() {
             override fun sendOrder(order: Int) {
                 when (order) {
                     IMClientOrder.CONNECT.ordinal -> {
-                        IMClient.with().getLongConnection().connect()
+                        mILongConnectionService?.connect()
                     }
                     IMClientOrder.DISCONNECT.ordinal -> {
-                        IMClient.with().getLongConnection().disConnect()
+                        mILongConnectionService?.disConnect()
                     }
                 }
             }
 
             override fun login(imParams: IMParams?) {
                 if (imParams != null) {
-                    IMClient.with().getLongConnection().initLoginParams(imParams)
+                    mILongConnectionService?.initLoginParams(imParams)
                 } else {
                     throw NullPointerException("imParams is null")
                 }
             }
 
             override fun sendMessage(message: String?) {
-                message?.let { IMClient.with().getLongConnection().sendMessage(it) }
+                message?.let { mILongConnectionService?.sendMessage(it) }
             }
 
             override fun registerMessageReceiveListener(messageReceiver: IMMessageReceiver?) {
@@ -85,12 +87,16 @@ internal class MessageService : Service() {
                 IMLoginManager.unRegisterLoginStatus(loginStatusReceiver)
             }
 
+            override fun bindLongConnectionService(service: com.example.mylibrary.listener.ILongConnectionService?) {
+                mILongConnectionService = service
+                Logger.log("长链接服务 ${service}")
+                mILongConnectionService?.registerNetwork()
+            }
         }
     }
 
     override fun onCreate() {
         super.onCreate()
-        IMClient.with().getLongConnection().registerNetwork(this)
         Logger.log("Service 启动")
     }
 

@@ -12,7 +12,7 @@ import com.example.mylibrary.entities.IMClientOrder
 import com.example.mylibrary.entities.IMParams
 import com.example.mylibrary.entities.MessageModel
 import com.example.mylibrary.factory.IMLongConnectionFactory
-import com.example.mylibrary.interfaces.LongConnectionService
+import com.example.mylibrary.listener.ILongConnectionService
 import com.example.mylibrary.listener.IMLoginStatusReceiver
 import com.example.mylibrary.listener.IMMessageReceiver
 import com.example.mylibrary.utils.Logger
@@ -35,9 +35,9 @@ class IMClient private constructor(builder: Builder) {
 
     private var loginCallback: IMLoginStatusReceiver.Stub? = null
 
-    private var longConnectionFactory: IMLongConnectionFactory<LongConnectionService>? = null
+    private var longConnectionFactory: IMLongConnectionFactory<ILongConnectionService.Stub>? = null
 
-    internal fun getLongConnection(): LongConnectionService {
+    private fun getLongConnection(): ILongConnectionService.Stub {
         if (longConnectionFactory == null || mApplication == null) {
             throw NullPointerException("longConnectionFactory || mApplication 为空")
         }
@@ -83,24 +83,35 @@ class IMClient private constructor(builder: Builder) {
 
         @JvmStatic
         fun with(): IMClient {
-            if (isInstalled()) {
-                throw RuntimeException("未初始化")
+            if (!isInstalled()) {
+                throw RuntimeException("IMClient 未初始化")
             }
             return mInstance;
         }
-
-
     }
 
     public class Builder {
-        private var mFactory: IMLongConnectionFactory<LongConnectionService>? = null
+        private var mFactory: IMLongConnectionFactory<ILongConnectionService.Stub>? = null
 
+        private var mApplication: Application? = null
 
-        public fun withFactory(factory: IMLongConnectionFactory<LongConnectionService>) = apply {
-            this.mFactory = factory
+        fun withApplication(application: Application) = apply {
+            this.mApplication = application
         }
 
-        fun getFactory(): IMLongConnectionFactory<LongConnectionService> {
+        fun getApplication(): Application {
+            if (mApplication == null) {
+                throw NullPointerException("Application 为空")
+            }
+            return mApplication!!
+        }
+
+        public fun withFactory(factory: IMLongConnectionFactory<ILongConnectionService.Stub>) =
+            apply {
+                this.mFactory = factory
+            }
+
+        fun getFactory(): IMLongConnectionFactory<ILongConnectionService.Stub> {
             if (mFactory == null) {
                 mFactory = DefaultWebsocketFactory.create()
             }
@@ -108,7 +119,8 @@ class IMClient private constructor(builder: Builder) {
         }
 
         public fun build(): IMClient {
-            return init(IMClient(this))
+            val imClient = IMClient(this)
+            return init(imClient)
         }
     }
 
@@ -150,7 +162,6 @@ class IMClient private constructor(builder: Builder) {
         }
     }
 
-
     private fun setupService() {
         mApplication?.applicationContext?.run {
             val intent = Intent(this, MessageService::class.java)
@@ -170,6 +181,7 @@ class IMClient private constructor(builder: Builder) {
                 asBinder().linkToDeath(deathRecipient, 0)
                 registerMessageReceiveListener(mReceiver)
                 registerLoginReceiveListener(loginCallback)
+                bindLongConnectionService(getLongConnection())
                 login(imParams)
             }
         }

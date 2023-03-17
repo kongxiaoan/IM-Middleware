@@ -45,7 +45,6 @@ wss.on('connection', (ws) => {
 
   // 处理连接关闭
   ws.on('close', () => {
-    console.log('Client disconnected');
     clients.delete(ws);
   });
 

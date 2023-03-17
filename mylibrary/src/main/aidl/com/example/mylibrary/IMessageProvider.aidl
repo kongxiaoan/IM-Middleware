@@ -6,6 +6,7 @@ import com.example.mylibrary.entities.MessageModel;
 import com.example.mylibrary.entities.IMParams;
 import com.example.mylibrary.listener.IMMessageReceiver;
 import com.example.mylibrary.listener.IMLoginStatusReceiver;
+import com.example.mylibrary.listener.ILongConnectionService;
 
 interface IMessageProvider{
     void sendMessage(String message);
@@ -13,6 +14,8 @@ interface IMessageProvider{
     void sendOrder(int order);
 
     void login(in IMParams imParams);
+
+    void bindLongConnectionService(ILongConnectionService service);
 
     void registerMessageReceiveListener(IMMessageReceiver messageReceiver);
 

@@ -3,6 +3,7 @@ package com.example.imclient
 import android.app.Application
 import android.content.Context
 import android.os.Process
+import com.example.mylibrary.IMClient
 
 /**
  *
