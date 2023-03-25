@@ -3,9 +3,9 @@ package com.example.imclient.ui.expression.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.im.middleware.R
+import com.example.imclient.R
 import com.example.imclient.base.BaseRecyclerAdapter
-import com.im.middleware.databinding.ImChatExpressionTabItemBinding
+import com.example.imclient.databinding.ImChatExpressionTabItemBinding
 import com.example.imclient.ui.expression.entities.ExpressTabEntity
 
 /**

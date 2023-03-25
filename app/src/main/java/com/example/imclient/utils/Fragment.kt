@@ -4,7 +4,7 @@ import android.util.TypedValue
 import androidx.emoji.text.EmojiCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
-import com.example.imclient.IMApplication
+import com.example.imclient.MyApplication
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -56,7 +56,7 @@ fun String.getCompatEmojiString(): CharSequence? {
 
 fun Float.dpToPx(): Float {
     return TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP, this, IMApplication.context.resources.displayMetrics
+        TypedValue.COMPLEX_UNIT_DIP, this, MyApplication.context.resources.displayMetrics
     )
 }
 

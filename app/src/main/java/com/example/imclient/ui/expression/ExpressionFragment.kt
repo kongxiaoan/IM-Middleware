@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imclient.base.OnRecyclerViewItemClickListener
-import com.im.middleware.databinding.FragmentExpressionBinding
+import com.example.imclient.databinding.FragmentExpressionBinding
 import com.example.imclient.ui.expression.adapter.EmojiAdapter
 import com.example.imclient.ui.expression.entities.EmojiEntry
 import com.example.imclient.ui.main.helper.InputBoxViewHolder
@@ -58,7 +58,7 @@ class ExpressionFragment : Fragment() {
             viewModel(this) {
                 MainScope().launch(Dispatchers.IO) {
                     Logger.log("当前线程 ${Thread.currentThread().name}")
-                    com.example.imclient.utils.observe(getEmojiList(), ::renderEmoji)
+                    observe(getEmojiList(), ::renderEmoji)
                 }
             }
         }

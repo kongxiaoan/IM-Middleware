@@ -1,6 +1,9 @@
 package com.example.imclient
 
-import androidx.core.content.ContextCompat
+import android.content.Context
+import androidx.core.provider.FontRequest
+import com.bumptech.glide.Glide
+import com.bumptech.glide.GlideBuilder
 import com.example.imclient.im.IMCore
 
 /**
@@ -10,7 +13,21 @@ import com.example.imclient.im.IMCore
  * @description:
  */
 class MyApplication : BaseApplication() {
+
+    companion object {
+        lateinit var context: Context
+    }
     override fun initApp() {
+        context = this
         IMCore.init(this)
+        Glide.init(this, GlideBuilder())
+//        val fontRequest = FontRequest(
+//            "com.example.fontprovider",
+//            "com.example",
+//            "emoji compat Font Query",
+//            CERTIFICATES
+//        )
+//        val config = FontRequestEmojiCompatConfig(this, fontRequest)
+//        EmojiCompat.init(FontRequestEmojiCompatConfig.)
     }
 }

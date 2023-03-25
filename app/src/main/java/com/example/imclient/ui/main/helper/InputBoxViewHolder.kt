@@ -17,8 +17,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.im.middleware.R
-import com.im.middleware.databinding.FragmentMainBinding
+import com.example.imclient.R
+import com.example.imclient.databinding.FragmentMainBinding
 import com.example.imclient.ui.box_more.InputBoxMoreFragment
 import com.example.imclient.ui.expression.ExpressionContainerFragment
 import com.example.imclient.ui.main.IMMainViewModel

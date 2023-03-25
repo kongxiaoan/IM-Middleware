@@ -9,8 +9,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.im.middleware.R
-import com.im.middleware.databinding.FragmentMainBinding
+import com.example.imclient.R
+import com.example.imclient.databinding.FragmentMainBinding
 import com.example.imclient.utils.PermissionUtils
 import com.example.imclient.utils.Utils
 import kotlinx.coroutines.Dispatchers

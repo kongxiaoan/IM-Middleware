@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.im.middleware.R
+import com.example.imclient.R
 
 class MapBigExpressionFragment : Fragment() {
 

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.imclient.base.BaseRecyclerAdapter
-import com.im.middleware.databinding.ImChatRecyclerMapItemBinding
+import com.example.imclient.databinding.ImChatRecyclerMapItemBinding
 import com.example.imclient.ui.expression.entities.MapBigExpressionEntity
 
 /**

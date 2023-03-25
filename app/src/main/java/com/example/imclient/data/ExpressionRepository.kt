@@ -1,7 +1,7 @@
 package com.example.imclient.data
 
 import android.content.Context
-import com.example.imclient.IMApplication
+import com.example.imclient.MyApplication
 import com.example.imclient.data.api.ExpressionService
 import com.example.imclient.ui.expression.entities.EmojiEntry
 import com.example.imclient.utils.Logger
@@ -24,7 +24,7 @@ class ExpressionRepository {
                 return flow {
 //                    val pattern = Regex("^(\\S+)\\s+;\\s+fully-qualified\\s+#\\s+(\\S+)\\s+(.+)$")
                     val pattern = Regex("^(\\S+)\\s+;\\s+fully-qualified\\s+#\\s+((?:\\S+\\s+)+)(.+)$")
-                    val filterNotNull = readAssetsFile("emoji.txt", IMApplication.context)
+                    val filterNotNull = readAssetsFile("emoji.txt", MyApplication.context)
                         .trim()
                         .lines()
                         .map { line ->

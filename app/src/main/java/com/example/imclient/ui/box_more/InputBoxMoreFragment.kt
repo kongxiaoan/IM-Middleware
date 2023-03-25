@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.im.middleware.R
-import com.im.middleware.databinding.FragmentInputBoxMoreBinding
+import com.example.imclient.R
+import com.example.imclient.databinding.FragmentInputBoxMoreBinding
 import com.example.imclient.ui.expression.adapter.MapBigExpressionAdapter
 import com.example.imclient.ui.expression.entities.MapBigExpressionEntity
 

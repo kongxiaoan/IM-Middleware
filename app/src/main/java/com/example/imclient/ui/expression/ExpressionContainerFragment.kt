@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.im.middleware.R
+import com.example.imclient.R
 import com.example.imclient.base.OnRecyclerViewItemClickListener
-import com.im.middleware.databinding.FragmentExpressionContinerBinding
+import com.example.imclient.databinding.FragmentExpressionContinerBinding
 import com.example.imclient.ui.expression.adapter.ExpressTabAdapter
 import com.example.imclient.ui.expression.entities.ExpressTabEntity
 import com.example.imclient.ui.main.helper.InputBoxViewHolder

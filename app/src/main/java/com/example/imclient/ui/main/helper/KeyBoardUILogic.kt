@@ -3,7 +3,7 @@ package com.example.imclient.ui.main.helper
 import android.graphics.Rect
 import android.util.Log
 import androidx.fragment.app.Fragment
-import com.im.middleware.databinding.FragmentMainBinding
+import com.example.imclient.databinding.FragmentMainBinding
 import com.example.imclient.utils.Logger
 import com.example.imclient.utils.Utils
 

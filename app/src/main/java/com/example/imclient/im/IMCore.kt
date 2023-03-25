@@ -3,14 +3,11 @@ package com.example.imclient.im
 import android.app.Application
 import com.example.mylibrary.IMClient
 import com.example.mylibrary.IMClientEnum
-import com.example.mylibrary.IMClientParamsOuterClass
-import com.example.mylibrary.IMClientParamsOuterClass.IMClientParams
-import com.example.mylibrary.IMClientParamsOuterClass.TextMessage
+import com.example.mylibrary.IMClientMessageOuterClass
+import com.example.mylibrary.IMClientMessageOuterClass.IMClientMessage
 import com.example.mylibrary.entities.IMParams
 import com.example.mylibrary.listener.IMLoginStatusReceiver
 import com.example.mylibrary.utils.Logger
-import com.example.mylibrary.utils.XConverters
-import com.google.protobuf.ByteString
 
 /**
  *
@@ -57,8 +54,8 @@ object IMCore {
      */
     fun send(message: String) {
         // 构建文本消息
-        val textMessage = TextMessage.newBuilder().setContent("我是文本消息").build()
-        val params = IMClientParams.newBuilder()
+        val textMessage = IMClientMessageOuterClass.TextMessage.newBuilder().setContent("我是文本消息").build()
+        val params = IMClientMessage.newBuilder()
             //发送的是用户消息
             .setType(IMClientEnum.PlatformMsgType.USER_MSG_TYPE_VALUE)
             // 发送的是文本消息

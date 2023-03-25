@@ -14,7 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.imclient.base.OnRecyclerViewItemClickListener
-import com.im.middleware.databinding.FragmentMainBinding
+import com.example.imclient.databinding.FragmentMainBinding
 import com.example.imclient.ui.main.adapter.IMMainAdapter
 import com.example.imclient.ui.main.entities.ChatEntity
 import com.example.imclient.ui.main.helper.InputBoxState
@@ -24,7 +24,7 @@ import com.example.imclient.ui.main.helper.KeyBoardUILogic
 import com.example.imclient.utils.viewModel
 import com.example.imclient.ui.main.helper.voice.VoiceRecordHelper
 import com.example.imclient.utils.Logger
-import com.im.middleware.utils.*
+import com.example.imclient.utils.*
 import java.util.*
 
 class IMMainFragment : Fragment(), OnRecyclerViewItemClickListener<ChatEntity> {
@@ -62,7 +62,7 @@ class IMMainFragment : Fragment(), OnRecyclerViewItemClickListener<ChatEntity> {
         mViewModel.run {
             viewModel(this) {
                 viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-                    com.example.imclient.utils.observe(
+                    observe(
                         getImChatEntities("uid"),
                         ::renderChatEntities
                     )

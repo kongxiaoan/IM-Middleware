@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">x-im-middleware</string>
+    <string name="app_name">IM中间件</string>
     <string name="im_hold_and_speak">按住 说话</string>
     <string name="im_picture">图片</string>
     <string name="im_chat_cancel_send">手指上滑，取消发送</string>

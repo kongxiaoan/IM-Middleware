@@ -6,7 +6,7 @@ import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.im.middleware.R
+import com.example.imclient.R
 
 /**
  *

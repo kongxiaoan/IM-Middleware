@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.imclient.base.BaseRecyclerAdapter
-import com.im.middleware.databinding.ImChatRecyclerEmojiItemBinding
+import com.example.imclient.databinding.ImChatRecyclerEmojiItemBinding
 import com.example.imclient.ui.expression.entities.EmojiEntry
 import com.example.imclient.utils.Logger
 import com.example.imclient.utils.getCompatEmojiString
