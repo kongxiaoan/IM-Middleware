@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ResourceName">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.imclient.ui.main.IMMainViewModel" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+
+    <LinearLayout
+        android:id="@+id/cl_voiceRoom_inputRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        tools:visibility="visible">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/imEditBgCL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/im_chat_bottom_bg"
+            android:minHeight="60dp">
+
+            <RadioButton
+                android:id="@+id/imMiddlewareVoice"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/im_chat_edit_voice_selector"
+                android:button="@null"
+                android:checked="@{viewModel.voiceClickEnabled}"
+                android:onClick="@{viewModel::onVoiceAndKeyboardClick}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/imMiddlewareET"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/im_chat_et_style"
+                android:imeOptions="actionSend"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:minHeight="40dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:visibility="@{viewModel.voiceClickEnabled ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/imMiddlewareExpression"
+                app:layout_constraintStart_toEndOf="@id/imMiddlewareVoice"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="LabelFor"
+                tools:visibility="gone" />
+
+            <TextView
+                android:id="@+id/imMiddlewareTv"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/im_chat_et_style"
+                android:gravity="center"
+                android:text="@string/im_hold_and_speak"
+                android:textColor="@color/im_chat_sender_text_color"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="@{viewModel.voiceClickEnabled ? View.GONE : View.VISIBLE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/imMiddlewareExpression"
+                app:layout_constraintStart_toEndOf="@id/imMiddlewareVoice"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+
+
+            <RadioButton
+                android:id="@+id/imMiddlewareExpression"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/im_chat_edit_expression_selector"
+                android:button="@null"
+                android:checked="@{viewModel.expressionClick}"
+                android:onClick="@{viewModel::onExpressionAndKeyboardClick}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/imMiddlewareAdd"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imMiddlewareAdd"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:onClick="@{viewModel::onAddMoreClick}"
+                android:src="@drawable/icon_add"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/imMiddlewareVP"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="#F0EFEF"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/imEditBgCL"
+            tools:visibility="visible"
+            />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/imMiddlewareMoreVP"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="#F0EFEF"
+            android:overScrollMode="never"
+            android:paddingStart="13dp"
+            android:paddingEnd="13dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/imEditBgCL" />
+
+    </LinearLayout>
+
+</layout>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.imclient.ui.main.IMMainViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/im_chat_bubble_color"
+        tools:context=".ui.main.IMMainFragment"
+        tools:ignore="ContentDescription">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/imMiddlewareRV"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/wrapperInputBox"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/viewSendVoiceStatus"
+            android:layout_width="218dp"
+            android:layout_height="209dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/message_chat_page_voice_bg"
+            android:gravity="bottom|center_horizontal"
+            android:paddingBottom="61dp"
+            android:textColor="@color/black_90"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UnknownId"
+            tools:text="@string/im_chat_cancel_send"
+            tools:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/ivRecordStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:elevation="11dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/viewSendVoiceStatus"
+            app:layout_constraintEnd_toEndOf="@+id/viewSendVoiceStatus"
+            app:layout_constraintStart_toStartOf="@+id/viewSendVoiceStatus"
+            app:layout_constraintTop_toTopOf="@+id/viewSendVoiceStatus"
+            app:srcCompat="@drawable/message_record_0"
+            tools:visibility="gone" />
+
+        <View
+            android:id="@+id/hideHelperView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#00000000"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <!--输入框相关-->
+        <include
+            android:id="@+id/wrapperInputBox"
+            layout="@layout/im_inputbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

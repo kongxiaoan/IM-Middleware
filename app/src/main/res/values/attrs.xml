@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <attr name="font_path" format="string" />
+
+    <declare-styleable name="Widget_Head_Picture_View" tools:ignore="ResourceName">
+        <!--头像框的尺寸-->
+        <attr name="widget_frame_via" format="dimension" />
+        <!--头像的资源-->
+        <attr name="widget_frame_viaIcon" format="string" />
+    </declare-styleable>
+
+</resources>

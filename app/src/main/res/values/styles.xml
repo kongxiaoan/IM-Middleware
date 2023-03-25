@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="text_emoji" parent="@android:style/Widget.TextView">
+        <item name="font_path">fonts/Montserrat-Regular.otf</item>
+    </style>
+
+    <style name="message_tv_style_subtitle" parent="@android:style/Widget.TextView">
+
+    </style>
+</resources>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.example.imclient.ui.main.entities.ChatEntity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/im_chat_content_spacing_horizontal">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/line"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="64dp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            app:layout_constraintEnd_toStartOf="@id/sdvAvatar"
+            app:layout_constraintStart_toEndOf="@id/line"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <FrameLayout
+                android:id="@+id/message_framelayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/im_chat_half_spacing_horizontal"
+                app:layout_constraintBottom_toBottomOf="@id/llParent"
+                app:layout_constraintEnd_toStartOf="@id/llParent"
+                app:layout_constraintTop_toTopOf="@id/llParent">
+
+                <ImageView
+                    android:id="@+id/ivSendMessage"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/message_icon_send_message_fail"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:contentDescription="@string/im_chat_send_fail" />
+
+                <ProgressBar
+                    android:id="@+id/pbSendMessage"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:indeterminateDrawable="@drawable/widget_msg_pg_refresh"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+            </FrameLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llParent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/common_message_rect_primary_send_message_bg"
+                android:padding="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvTextContent"
+                    style="@style/message_tv_style_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:lineSpacingExtra="4dp"
+                    android:text="@{item.content}"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="你好你好你好你好你好你好你好你好你好" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/sdvAvatar"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="top"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:loadImage="@{item.userEntity.avator}"
+            app:gender="@{item.userEntity.gender}"
+            android:scaleType="centerInside"
+            tools:src="@drawable/icon_default_female"
+            android:contentDescription="@string/im_chat_avator" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

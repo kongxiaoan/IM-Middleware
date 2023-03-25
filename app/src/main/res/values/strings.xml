@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">IMClient</string>
+    <string name="app_name">x-im-middleware</string>
+    <string name="im_hold_and_speak">按住 说话</string>
+    <string name="im_picture">图片</string>
+    <string name="im_chat_cancel_send">手指上滑，取消发送</string>
+    <string name="im_chat_unpress_send">松开 结束</string>
+    <string name="im_chat_press_say">按住 说话</string>
+
+    <string name="im_chat_voice_max_length">还可以说%1$s秒</string>
+    <string name="im_chat_record_too_short">录制时间太短</string>
+    <string name="im_chat_send_fail">发送失败</string>
+    <string name="im_chat_avator">头像</string>
+    <string name="message_chat_secret_uncheck">未查看</string>
+
 </resources>

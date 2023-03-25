@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="im_chat_content_spacing_horizontal">18dp</dimen>
+    <dimen name="im_chat_half_spacing_horizontal">4dp</dimen>
+    <dimen name="im_chat_content_padding_horizontal">16dp</dimen>
+
+</resources>
