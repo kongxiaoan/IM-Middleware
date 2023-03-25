@@ -3,6 +3,8 @@ package com.example.mylibrary.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.mylibrary.IMClientParamsOuterClass;
+
 /**
  * @author: kpa
  * @date: 2023/2/22
@@ -35,6 +37,8 @@ public class MessageModel implements Parcelable {
     }
 
     public void setContent(String content) {
+
+
         this.content = content;
     }
 

@@ -1,7 +1,7 @@
 package com.example.mylibrary.manager
 
 import android.os.RemoteCallbackList
-import com.example.mylibrary.IMClient
+import com.example.mylibrary.IMClientMessageOuterClass.IMClientMessage
 import com.example.mylibrary.entities.MessageModel
 import com.example.mylibrary.listener.IMMessageReceiver
 
@@ -22,10 +22,10 @@ internal object IMMessageReceiveManager {
         mListListener.unregister(messageReceiver)
     }
 
-    fun onReceive(messageModel: MessageModel) {
+    fun onReceive(message: IMClientMessage) {
         val listenerCount = mListListener.beginBroadcast()
         for (i in 0 until listenerCount) {
-            mListListener.getBroadcastItem(i)?.onMessageReceived(messageModel)
+            mListListener.getBroadcastItem(i)?.onMessageReceived(message.toByteArray())
         }
         mListListener.finishBroadcast()
     }

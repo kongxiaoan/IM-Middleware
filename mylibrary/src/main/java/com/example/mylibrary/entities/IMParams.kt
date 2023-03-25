@@ -11,28 +11,25 @@ import android.os.Parcelable
  */
 class IMParams : Parcelable {
     var token: String = ""
-    var ip = ""
-    var port = 0
+    var url = ""
     var uid = ""
+
 
     constructor(parcel: Parcel) {
         token = parcel.readString().toString()
-        ip = parcel.readString().toString()
-        port = parcel.readInt()
+        url = parcel.readString().toString()
         uid = parcel.readString().toString()
     }
 
     constructor(builder: Builder) {
         token = builder.getToken()
-        ip = builder.getIp()
-        port = builder.getPort()
+        url = builder.getUrl()
         uid = builder.getUid()
     }
 
     class Builder {
         private var token: String = ""
-        private var ip = ""
-        private var port = 0
+        private var url = ""
         private var uid = ""
 
         fun withToken(token: String) = apply {
@@ -41,17 +38,12 @@ class IMParams : Parcelable {
 
         fun getToken() = token
 
-        fun withIp(ip: String) = apply {
-            this.ip = ip
+        fun withUrl(url: String) = apply {
+            this.url = url
         }
 
-        fun getIp() = ip
+        fun getUrl() = url
 
-        fun withPort(port: Int) = apply {
-            this.port = port
-        }
-
-        fun getPort() = port
 
         fun withUid(uid: String) = apply {
             this.uid = uid
@@ -66,13 +58,16 @@ class IMParams : Parcelable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(token)
-        parcel.writeString(ip)
-        parcel.writeInt(port)
+        parcel.writeString(url)
         parcel.writeString(uid)
     }
 
     override fun describeContents(): Int {
         return 0
+    }
+
+    override fun toString(): String {
+        return "IMParams(token='$token', url='$url', uid='$uid')"
     }
 
     companion object CREATOR : Parcelable.Creator<IMParams> {

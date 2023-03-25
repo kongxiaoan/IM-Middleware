@@ -1,6 +1,5 @@
 package com.example.mylibrary.default
 
-import android.content.Context
 import com.example.mylibrary.factory.IMLongConnectionFactory
 
 /**
@@ -17,7 +16,7 @@ class DefaultWebsocketFactory : IMLongConnectionFactory<DefaultLongConnectionImp
         }
     }
 
-    override fun createLongConnection(context: Context): DefaultLongConnectionImpl {
-        return DefaultLongConnectionImpl(context)
+    override fun createLongConnection(): DefaultLongConnectionImpl {
+        return DefaultLongConnectionImpl()
     }
 }
