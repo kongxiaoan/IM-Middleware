@@ -1,10 +1,13 @@
 package com.example.imclient.utils
 
+import android.content.Context
+import android.content.res.Resources
 import android.util.TypedValue
 import androidx.emoji.text.EmojiCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import com.example.imclient.MyApplication
+import com.example.imclient.ui.main.IMMainViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

@@ -2,6 +2,7 @@ package com.example.imclient.ui.main.adapter.holder.strategy
 
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import com.example.imclient.base.OnRecyclerViewItemClickListener
 import com.example.imclient.databinding.ImChatRecyclerSendTextItemBinding
 import com.example.imclient.ui.main.entities.ChatEntity
 import com.example.imclient.utils.Logger

@@ -1,9 +1,13 @@
 package com.example.imclient.ui.expression
 
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import androidx.emoji.text.EmojiSpan
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,6 +23,7 @@ import com.example.imclient.utils.viewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import java.util.regex.Pattern
 
 
 class ExpressionFragment : Fragment() {
@@ -37,7 +42,7 @@ class ExpressionFragment : Fragment() {
     companion object {
         lateinit var inputBoxViewHolder: InputBoxViewHolder
         fun newInstance(inputBoxViewHolder: InputBoxViewHolder): ExpressionFragment {
-            Companion.inputBoxViewHolder = inputBoxViewHolder
+            this.inputBoxViewHolder = inputBoxViewHolder
             return ExpressionFragment()
         }
     }
@@ -50,7 +55,41 @@ class ExpressionFragment : Fragment() {
         binding = FragmentExpressionBinding.inflate(inflater, container, false)
         initView()
         loadData()
+        registerObserver()
+        bindEvent()
         return binding?.root
+    }
+
+    private fun bindEvent() {
+        binding?.run {
+            var editText = inputBoxViewHolder.binding.wrapperInputBox.imMiddlewareET
+            expressionDeleteFL.setOnClickListener {
+                val inputConnection =
+                    editText.onCreateInputConnection(
+                        EditorInfo()
+                    )
+                // 找到要删除的字符的边界
+                val text = editText.text.toString()
+                val index = editText.selectionStart
+                var deleteLength = 1
+                if (index > 0 && index <= text.length) {
+                    val codePoint = text.codePointBefore(index)
+                    deleteLength = if (Character.isSupplementaryCodePoint(codePoint)) 2 else 1
+                }
+                inputConnection.deleteSurroundingText(deleteLength, 0)
+            }
+            expressionSendFL.setOnClickListener {
+                editText.onEditorAction(EditorInfo.IME_ACTION_SEND)
+            }
+        }
+    }
+
+    private fun registerObserver() {
+        inputBoxViewHolder.currentEditText.observe(this.viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                // todo 删除 发送的状态图
+            }
+        }
     }
 
     private fun loadData() {
@@ -75,7 +114,7 @@ class ExpressionFragment : Fragment() {
     private fun initView() {
         binding?.run {
             expressionRv.layoutManager =
-                GridLayoutManager(this@ExpressionFragment.requireContext(), 6)
+                GridLayoutManager(this@ExpressionFragment.requireContext(), 8)
             expressionRv.adapter = mAdapter
         }
     }

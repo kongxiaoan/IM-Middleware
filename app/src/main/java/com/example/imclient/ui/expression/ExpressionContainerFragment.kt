@@ -38,7 +38,7 @@ class ExpressionContainerFragment : Fragment(), OnRecyclerViewItemClickListener<
     companion object {
         var inputBoxViewHolder: InputBoxViewHolder? = null
         fun newInstance(inputBoxViewHolder: InputBoxViewHolder): ExpressionContainerFragment {
-            Companion.inputBoxViewHolder = inputBoxViewHolder
+            this.inputBoxViewHolder = inputBoxViewHolder
             return ExpressionContainerFragment()
         }
     }

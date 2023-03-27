@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.ResultReceiver
-import android.text.Editable
-import android.text.InputFilter
-import android.text.TextWatcher
+import android.text.*
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.imclient.R
 import com.example.imclient.databinding.FragmentMainBinding
@@ -28,16 +27,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
+
 class InputBoxViewHolder(
     val mActivity: FragmentActivity,
     val binding: FragmentMainBinding,
-    val viewModel: IMMainViewModel
+    val viewModel: IMMainViewModel,
+    val inputBoxCallback: InputBoxCallback
 ) :
     View.OnClickListener {
 
     private val wrapperRoot = binding.wrapperInputBox
 
     private var keybordClose = false
+
+    var currentEditText: MutableLiveData<String> = MutableLiveData()
 
     /**
      * 软键盘高度
@@ -63,32 +66,9 @@ class InputBoxViewHolder(
     fun editText(content: String) {
         binding.wrapperInputBox.imMiddlewareET.run {
             text = this.text.append(content)
+            setSelection(text.length)
         }
     }
-
-    private val inputBoxViewAdapter by lazy {
-        Logger.log("fragmentList size" + fragmentList.size)
-        object : FragmentStateAdapter(mActivity) {
-            /**
-             * Returns the total number of items in the data set held by the adapter.
-             *
-             * @return The total number of items in this adapter.
-             */
-            /**
-             * Returns the total number of items in the data set held by the adapter.
-             *
-             * @return The total number of items in this adapter.
-             */
-            override fun getItemCount(): Int {
-                return fragmentList.size
-            }
-
-            override fun createFragment(position: Int): Fragment {
-                return fragmentList[position]
-            }
-        }
-    }
-
 
     private val inputBoxViewMoreAdapter by lazy {
         object : FragmentStateAdapter(mActivity) {
@@ -178,11 +158,16 @@ class InputBoxViewHolder(
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    Logger.log("输入的文字 ${s.toString()}")
+                    currentEditText.value = s.toString()
+                    inputBoxCallback.editText(s)
                 }
             })
             //监听软键盘上的发送按钮
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    inputBoxCallback.send(binding.wrapperInputBox.imMiddlewareET.text.toString())
+                    binding.wrapperInputBox.imMiddlewareET.setText("")
                 }
                 true
             }

@@ -11,5 +11,6 @@
     <string name="im_chat_send_fail">发送失败</string>
     <string name="im_chat_avator">头像</string>
     <string name="message_chat_secret_uncheck">未查看</string>
+    <string name="im_chat_send">发送</string>
 
 </resources>

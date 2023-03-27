@@ -3,6 +3,7 @@ package com.example.imclient.ui.expression.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.emoji.text.EmojiCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.imclient.base.BaseRecyclerAdapter
 import com.example.imclient.databinding.ImChatRecyclerEmojiItemBinding

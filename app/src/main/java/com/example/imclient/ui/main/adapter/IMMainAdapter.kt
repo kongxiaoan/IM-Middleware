@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.imclient.base.BaseRecyclerAdapter
 import com.example.imclient.ui.main.adapter.holder.strategy.IMMainChatStrategyUtils
 import com.example.imclient.ui.main.entities.ChatEntity
+import com.example.imclient.utils.Logger
 
 /**
  *

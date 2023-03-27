@@ -1,5 +1,6 @@
 package com.example.imclient.data
 
+import androidx.lifecycle.LiveData
 import com.example.imclient.data.api.IMMainService
 import com.example.imclient.function.utils.ChatHolderType
 import com.example.imclient.function.utils.MsgFromType
@@ -7,6 +8,11 @@ import com.example.imclient.ui.main.entities.ChatEntity
 import com.example.imclient.ui.main.entities.UserEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
 /**
  *

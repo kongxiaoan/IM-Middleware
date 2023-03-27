@@ -3,7 +3,11 @@ package com.example.imclient.ui.main.adapter.holder.strategy
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.example.imclient.databinding.ImChatRecyclerReceiveVoiceLayoutBinding
+import com.example.imclient.databinding.ImChatRecyclerSendImgItemBinding
+import com.example.imclient.databinding.ImChatRecyclerSendTextItemBinding
+import com.example.imclient.databinding.ImChatRecyclerSendVoiceLayoutBinding
 import com.example.imclient.ui.main.entities.ChatEntity
+import com.example.imclient.utils.Logger
 import com.example.imclient.utils.safeCast
 
 /**

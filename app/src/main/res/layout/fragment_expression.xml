@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:background="@color/black"
     tools:context=".ui.expression.ExpressionFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -12,5 +13,48 @@
         android:layout_height="wrap_content"
         android:overScrollMode="never"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:paddingEnd="13dp"
+        android:paddingStart="13dp"
+        android:background="@drawable/im_chat_bottom_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <FrameLayout
+            android:id="@+id/expressionDeleteFL"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:background="@drawable/im_panel_picture_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:src="@drawable/icon_chat_delete" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/expressionSendFL"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/im_panel_picture_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/expressionDeleteFL"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/im_chat_send" />
+        </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
