@@ -88,7 +88,7 @@ class IMMainFragment : Fragment(), OnRecyclerViewItemClickListener<ChatEntity>, 
                 val keypadHeight = screenHeight - r.bottom
                 //键盘是否弹出
                 val diff = screenHeight * 0.15
-                if (keypadHeight > diff) { // 45% of the screen height
+                if (keypadHeight > diff) { // 15% of the screen height
                     imMiddlewareRV.scrollToPosition(mAdapter.getItemCount() - 1);
                 }
             }
