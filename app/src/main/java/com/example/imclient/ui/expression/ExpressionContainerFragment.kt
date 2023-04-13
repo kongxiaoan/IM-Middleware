@@ -25,14 +25,14 @@ class ExpressionContainerFragment : Fragment(), OnRecyclerViewItemClickListener<
     }
     private val tabList = arrayListOf<ExpressTabEntity>(
         ExpressTabEntity(
-            R.drawable.icon_expression
+            R.drawable.icon_expression,
         ),
         ExpressTabEntity(
-            R.drawable.icon_voice
+            R.drawable.icon_voice,
         ),
         ExpressTabEntity(
-            R.drawable.icon_add
-        )
+            R.drawable.icon_add,
+        ),
     )
 
     companion object {
@@ -44,8 +44,9 @@ class ExpressionContainerFragment : Fragment(), OnRecyclerViewItemClickListener<
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentExpressionContinerBinding.inflate(inflater, container, false)
         initView()
@@ -62,8 +63,6 @@ class ExpressionContainerFragment : Fragment(), OnRecyclerViewItemClickListener<
             tabAdapter.notifyDataSetChanged()
         }
     }
-
-
 
     private fun initView() {
         binding?.run {
@@ -95,5 +94,4 @@ class ExpressionContainerFragment : Fragment(), OnRecyclerViewItemClickListener<
         Logger.log("onItemClick = position = $position")
         binding?.expressionRv?.currentItem = position
     }
-
 }

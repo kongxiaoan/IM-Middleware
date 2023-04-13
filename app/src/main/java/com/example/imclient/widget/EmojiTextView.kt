@@ -3,9 +3,6 @@ package com.example.imclient.widget
 import android.content.Context
 import android.graphics.Typeface
 import android.util.AttributeSet
-import android.widget.TextView
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 
 /**
  *
@@ -20,7 +17,7 @@ class EmojiTextView : androidx.appcompat.widget.AppCompatTextView {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
         attrs,
-        defStyleAttr
+        defStyleAttr,
     ) {
         // 初始化时将Emoji字体设置到TextView上
         val emojiTypeface =

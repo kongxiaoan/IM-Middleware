@@ -5,7 +5,6 @@ import com.example.mylibrary.entities.IMParams
 import com.example.mylibrary.entities.MessageModel
 import com.example.mylibrary.listener.ILongConnectionService
 import com.example.mylibrary.manager.IMLoginManager
-import com.example.mylibrary.manager.IMMessageReceiveManager
 import com.example.mylibrary.utils.Logger
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -37,7 +36,6 @@ class DefaultLongConnectionImpl : ILongConnectionService.Stub() {
     private var imParams: IMParams? = null
 
     override fun initLongConnection() {
-
     }
 
     fun release() {
@@ -45,7 +43,7 @@ class DefaultLongConnectionImpl : ILongConnectionService.Stub() {
     }
 
     override fun connect() {
-        Logger.log("开始连接 ${imParams}")
+        Logger.log("开始连接 $imParams")
         if (imParams != null) {
             val request = Request.Builder()
                 .url(imParams!!.url)
@@ -94,7 +92,6 @@ class DefaultLongConnectionImpl : ILongConnectionService.Stub() {
             }
         }
     }
-
 
     private val wsListener = object : WebSocketListener() {
         override fun onOpen(webSocket: WebSocket, response: Response) {

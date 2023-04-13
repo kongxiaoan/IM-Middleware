@@ -22,19 +22,19 @@ class MapBigExpressionAdapter :
         fun bind(mapBigExpressionEntity: MapBigExpressionEntity) {
             bind.item = mapBigExpressionEntity
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MapBigExpressionViewHolder {
         return MapBigExpressionViewHolder(
             ImChatRecyclerMapItemBinding.inflate(
                 LayoutInflater.from(
-                    parent.context
-                ), parent, false
-            )
+                    parent.context,
+                ),
+                parent,
+                false,
+            ),
         )
     }
-
 
     override fun onBindViewHolder(holder: MapBigExpressionViewHolder, position: Int) {
         holder.bind(getItem(position))

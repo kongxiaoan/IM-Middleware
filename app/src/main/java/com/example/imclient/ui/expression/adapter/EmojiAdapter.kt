@@ -3,14 +3,12 @@ package com.example.imclient.ui.expression.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.emoji.text.EmojiCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.imclient.base.BaseRecyclerAdapter
 import com.example.imclient.databinding.ImChatRecyclerEmojiItemBinding
 import com.example.imclient.ui.expression.entities.EmojiEntry
 import com.example.imclient.utils.Logger
 import com.example.imclient.utils.getCompatEmojiString
-
 
 /**
  *
@@ -39,7 +37,6 @@ class EmojiAdapter() :
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmojiViewHolder {
         context = parent.context
 
@@ -47,11 +44,10 @@ class EmojiAdapter() :
             ImChatRecyclerEmojiItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false
-            )
+                false,
+            ),
         )
     }
-
 
     override fun onBindViewHolder(holder: EmojiViewHolder, position: Int) {
         holder.bind(list[position])

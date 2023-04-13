@@ -8,5 +8,5 @@ package com.example.mylibrary.entities
  */
 enum class IMClientOrder(order: Int) {
     CONNECT(0),
-    DISCONNECT(1)
+    DISCONNECT(1),
 }

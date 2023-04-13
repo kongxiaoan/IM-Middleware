@@ -10,9 +10,7 @@ class ExpressionViewModel : ViewModel() {
 
     var emojiDatabaseUrl = "https://unicode.org/Public/emoji/14.0/emoji-test.txt"
 
-
-    suspend fun getEmojiList() :Flow<List<EmojiEntry>>{
+    suspend fun getEmojiList(): Flow<List<EmojiEntry>> {
         return ExpressionRepository().getEmojiList(emojiDatabaseUrl)
     }
-
 }

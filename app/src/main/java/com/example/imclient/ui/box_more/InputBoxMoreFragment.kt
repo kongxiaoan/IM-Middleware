@@ -17,6 +17,7 @@ class InputBoxMoreFragment : Fragment() {
     companion object {
         fun newInstance() = InputBoxMoreFragment()
     }
+
     private var binding: FragmentInputBoxMoreBinding? = null
 
     private val viewModel = activityViewModels<InputBoxMoreViewModel>()
@@ -24,8 +25,9 @@ class InputBoxMoreFragment : Fragment() {
     private val mAdapter: MapBigExpressionAdapter = MapBigExpressionAdapter()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentInputBoxMoreBinding.inflate(inflater, container, false)
         initView()
@@ -35,7 +37,7 @@ class InputBoxMoreFragment : Fragment() {
 
     private fun loadData() {
         var listOf = arrayListOf<MapBigExpressionEntity>()
-        for (i in 0 ..6) {
+        for (i in 0..6) {
             listOf.add(MapBigExpressionEntity(requireContext().getString(R.string.im_picture)))
         }
 
@@ -44,9 +46,9 @@ class InputBoxMoreFragment : Fragment() {
 
     private fun initView() {
         binding?.run {
-            imMiddlewareMoreRV.layoutManager = GridLayoutManager(this@InputBoxMoreFragment.requireContext(), 4)
+            imMiddlewareMoreRV.layoutManager =
+                GridLayoutManager(this@InputBoxMoreFragment.requireContext(), 4)
             imMiddlewareMoreRV.adapter = mAdapter
         }
     }
-
 }

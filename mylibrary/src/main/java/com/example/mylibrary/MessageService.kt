@@ -1,10 +1,8 @@
 package com.example.mylibrary
 
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Bundle
 import android.os.IBinder
 import android.os.Parcel
 import com.example.mylibrary.entities.IMClientOrder

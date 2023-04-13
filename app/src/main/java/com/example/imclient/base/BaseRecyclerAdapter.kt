@@ -69,7 +69,6 @@ abstract class BaseRecyclerAdapter<T, H : RecyclerView.ViewHolder> : RecyclerVie
         notifyItemChanged(position, "payloads")
     }
 
-
     fun removeBottom() {
         if (mList.size > 0) {
             mList.removeAt(mList.size - 1)
@@ -101,7 +100,6 @@ abstract class BaseRecyclerAdapter<T, H : RecyclerView.ViewHolder> : RecyclerVie
         notifyItemRangeInserted(itemCount, list.size)
     }
 
-
     /**
      * 追加数据
      *
@@ -122,7 +120,6 @@ abstract class BaseRecyclerAdapter<T, H : RecyclerView.ViewHolder> : RecyclerVie
         mList.clear()
         notifyDataSetChanged()
     }
-
 
     fun deleteAll() {
         mList.clear()
@@ -160,7 +157,9 @@ abstract class BaseRecyclerAdapter<T, H : RecyclerView.ViewHolder> : RecyclerVie
     fun getItem(position: Int): T {
         return if (position > mList.size - 1) {
             throw Exception("Out of index")
-        } else mList[position]
+        } else {
+            mList[position]
+        }
     }
 
     /**
@@ -169,5 +168,4 @@ abstract class BaseRecyclerAdapter<T, H : RecyclerView.ViewHolder> : RecyclerVie
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
-
 }

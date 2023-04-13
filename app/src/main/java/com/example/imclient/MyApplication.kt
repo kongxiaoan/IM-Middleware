@@ -28,7 +28,7 @@ class MyApplication : BaseApplication() {
             "com.google.android.gms.fonts",
             "com.google.android.gms",
             "Montserrat Subrayada",
-            R.array.com_google_android_gms_fonts_certs
+            R.array.com_google_android_gms_fonts_certs,
         )
         val config = FontRequestEmojiCompatConfig(this, fontRequest)
         EmojiCompat.init(config)

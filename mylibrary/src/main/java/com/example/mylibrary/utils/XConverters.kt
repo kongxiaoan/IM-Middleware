@@ -22,8 +22,8 @@ object XConverters {
             ByteString.copyFrom(
                 Base64.decode(
                     string,
-                    Base64.DEFAULT
-                )
+                    Base64.DEFAULT,
+                ),
             )
         } else {
             null

@@ -17,7 +17,6 @@ object Logger {
 
     public val logLiveData: MutableLiveData<String> = MutableLiveData()
 
-
     fun getCurrentProcessName(context: Context): String {
         val pid = android.os.Process.myPid()
         val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager

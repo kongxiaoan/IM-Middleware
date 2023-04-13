@@ -6,7 +6,6 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import com.example.mylibrary.MessageService
 import com.example.mylibrary.entities.IMLoginStatus
 import com.example.mylibrary.listener.ILongConnectionService
 import com.example.mylibrary.utils.Logger

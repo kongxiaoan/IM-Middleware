@@ -1,13 +1,10 @@
 package com.example.imclient.ui.expression
 
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.emoji.text.EmojiSpan
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -23,8 +20,6 @@ import com.example.imclient.utils.viewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import java.util.regex.Pattern
-
 
 class ExpressionFragment : Fragment() {
 
@@ -47,10 +42,10 @@ class ExpressionFragment : Fragment() {
         }
     }
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentExpressionBinding.inflate(inflater, container, false)
         initView()
@@ -66,7 +61,7 @@ class ExpressionFragment : Fragment() {
             expressionDeleteFL.setOnClickListener {
                 val inputConnection =
                     editText.onCreateInputConnection(
-                        EditorInfo()
+                        EditorInfo(),
                     )
                 // 找到要删除的字符的边界
                 val text = editText.text.toString()
@@ -118,5 +113,4 @@ class ExpressionFragment : Fragment() {
             expressionRv.adapter = mAdapter
         }
     }
-
 }

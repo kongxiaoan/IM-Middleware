@@ -9,7 +9,6 @@ import com.example.imclient.im.IMCore
 import com.example.mylibrary.IMClient
 import com.example.mylibrary.utils.Logger
 
-
 class MainActivity : AppCompatActivity() {
 
     private val imLogTV: TextView by lazy {
@@ -30,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         appendLog("$message")
     }
 
-
     /**
      * 追加日志信息到 TextView 中
      *
@@ -41,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             """
            $log
             
-            """.trimIndent()
+            """.trimIndent(),
         )
         scrollToBottom()
     }
@@ -62,6 +60,4 @@ class MainActivity : AppCompatActivity() {
     fun disConnectSocket(view: View) {
         IMClient.with().disConnect()
     }
-
-
 }

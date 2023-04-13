@@ -12,5 +12,4 @@ import kotlinx.coroutines.flow.Flow
 interface IMMainService {
 
     suspend fun getImChatEntities(chatWithId: String): Flow<List<ChatEntity>>
-
 }

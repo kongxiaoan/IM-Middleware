@@ -11,5 +11,5 @@ data class EmojiEntry(
     val codePoint: Int,
     val version: String,
     val comment: String,
-    val codePointHex: String
+    val codePointHex: String,
 )

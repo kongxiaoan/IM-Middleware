@@ -1,6 +1,5 @@
 package com.example.imclient.data
 
-import androidx.lifecycle.LiveData
 import com.example.imclient.data.api.IMMainService
 import com.example.imclient.function.utils.ChatHolderType
 import com.example.imclient.function.utils.MsgFromType
@@ -8,11 +7,6 @@ import com.example.imclient.ui.main.entities.ChatEntity
 import com.example.imclient.ui.main.entities.UserEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
 
 /**
  *
@@ -39,8 +33,8 @@ class IMMainRepository {
                                     MsgFromType.MSG_SERVER,
                                     ChatHolderType.SEND_IMG.type,
                                     "https://img.win3000.com/m00/d7/79/d9859520938232779b5dbc4cd0d1283c_c_224_336.jpg",
-                                    userEntity
-                                )
+                                    userEntity,
+                                ),
                             )
                             continue
                         } else if (i < 20) {
@@ -53,8 +47,8 @@ class IMMainRepository {
                                     MsgFromType.MSG_SERVER,
                                     ChatHolderType.RECEIVE_TEXT.type,
                                     "我是测试数据$i",
-                                    userEntity
-                                )
+                                    userEntity,
+                                ),
                             )
                             continue
                         } else if (i < 30) {
@@ -67,8 +61,8 @@ class IMMainRepository {
                                     MsgFromType.MSG_SERVER,
                                     ChatHolderType.SEND_TEXT.type,
                                     "我是测试数据$i",
-                                    userEntity
-                                )
+                                    userEntity,
+                                ),
                             )
                             continue
                         } else if (i < 40) {
@@ -81,11 +75,11 @@ class IMMainRepository {
                                     MsgFromType.MSG_SERVER,
                                     ChatHolderType.RECEIVE_IMG.type,
                                     "https://img.win3000.com/m00/26/e1/9d51bbd60614390b4ff94f38138eb71f.jpg",
-                                    userEntity
-                                )
+                                    userEntity,
+                                ),
                             )
                             continue
-                        } else if(i < 50) {
+                        } else if (i < 50) {
                             val userEntity = UserEntity()
                             userEntity.gender = 1
                             userEntity.avator =
@@ -95,11 +89,11 @@ class IMMainRepository {
                                     MsgFromType.MSG_SERVER,
                                     ChatHolderType.SEND_VOICE.type,
                                     "https://img.win3000.com/m00/26/e1/9d51bbd60614390b4ff94f38138eb71f.jpg",
-                                    userEntity
-                                )
+                                    userEntity,
+                                ),
                             )
                             continue
-                        } else if(i < 60) {
+                        } else if (i < 60) {
                             val userEntity = UserEntity()
                             userEntity.gender = 1
                             userEntity.avator =
@@ -109,8 +103,8 @@ class IMMainRepository {
                                     MsgFromType.MSG_SERVER,
                                     ChatHolderType.RECEIVE_VOICE.type,
                                     "https://img.win3000.com/m00/26/e1/9d51bbd60614390b4ff94f38138eb71f.jpg",
-                                    userEntity
-                                )
+                                    userEntity,
+                                ),
                             )
                             continue
                         }
@@ -118,7 +112,6 @@ class IMMainRepository {
                     emit(testData)
                 }
             }
-
         }
     }
 

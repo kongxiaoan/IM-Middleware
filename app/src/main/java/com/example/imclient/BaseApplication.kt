@@ -3,7 +3,6 @@ package com.example.imclient
 import android.app.Application
 import android.content.Context
 import android.os.Process
-import com.example.mylibrary.IMClient
 
 /**
  *
@@ -11,7 +10,7 @@ import com.example.mylibrary.IMClient
  * @date: 2023/2/22
  * @description:
  */
-abstract class BaseApplication :Application(){
+abstract class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -27,7 +26,7 @@ abstract class BaseApplication :Application(){
             val appProcessInfo = var3.next() as android.app.ActivityManager.RunningAppProcessInfo
             if (appProcessInfo.pid == myPid && appProcessInfo.processName.equals(
                     this.packageName,
-                    ignoreCase = true
+                    ignoreCase = true,
                 )
             ) {
                 this.initApp()

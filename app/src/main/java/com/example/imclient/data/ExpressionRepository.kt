@@ -23,7 +23,8 @@ class ExpressionRepository {
                 Logger.log("当前线程 ${Thread.currentThread().name}")
                 return flow {
 //                    val pattern = Regex("^(\\S+)\\s+;\\s+fully-qualified\\s+#\\s+(\\S+)\\s+(.+)$")
-                    val pattern = Regex("^(\\S+)\\s+;\\s+fully-qualified\\s+#\\s+((?:\\S+\\s+)+)(.+)$")
+                    val pattern =
+                        Regex("^(\\S+)\\s+;\\s+fully-qualified\\s+#\\s+((?:\\S+\\s+)+)(.+)$")
                     val filterNotNull = readAssetsFile("emoji.txt", MyApplication.context)
                         .trim()
                         .lines()
@@ -32,18 +33,21 @@ class ExpressionRepository {
                             if (matchResult != null) {
                                 val (emoji, codePointHex, comment) = matchResult.destructured
                                 val codePoint = emoji.drop(2).toInt(16)
-                                EmojiEntry(emoji, codePoint, "E${emoji.take(2)}", comment,codePointHex)
+                                EmojiEntry(
+                                    emoji,
+                                    codePoint,
+                                    "E${emoji.take(2)}",
+                                    comment,
+                                    codePointHex,
+                                )
                             } else {
                                 null
                             }
                         }.filterNotNull()
 
-
-
                     emit(filterNotNull)
                 }
             }
-
         }
     }
 

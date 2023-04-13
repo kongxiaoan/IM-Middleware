@@ -25,7 +25,7 @@ object PermissionUtils {
         // 检查录音权限
         if (ContextCompat.checkSelfPermission(
                 mActivity,
-                Manifest.permission.RECORD_AUDIO
+                Manifest.permission.RECORD_AUDIO,
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             hasPermission = false
@@ -34,9 +34,9 @@ object PermissionUtils {
                 mActivity,
                 arrayOf(
                     Manifest.permission.RECORD_AUDIO,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
                 ),
-                RECORD_AUDIO_PERMISSION_CODE
+                RECORD_AUDIO_PERMISSION_CODE,
             )
         }
 
@@ -56,5 +56,4 @@ object PermissionUtils {
 //        }
         return hasPermission
     }
-
 }

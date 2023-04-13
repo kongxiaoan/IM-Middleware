@@ -2,7 +2,6 @@ package com.example.mylibrary.manager
 
 import android.os.RemoteCallbackList
 import com.example.mylibrary.IMClientMessageOuterClass.IMClientMessage
-import com.example.mylibrary.entities.MessageModel
 import com.example.mylibrary.listener.IMMessageReceiver
 
 /**
@@ -12,7 +11,6 @@ import com.example.mylibrary.listener.IMMessageReceiver
  */
 internal object IMMessageReceiveManager {
     private val mListListener: RemoteCallbackList<IMMessageReceiver> = RemoteCallbackList()
-
 
     internal fun registerReceiver(messageReceiver: IMMessageReceiver?) {
         mListListener.register(messageReceiver)
@@ -29,5 +27,4 @@ internal object IMMessageReceiveManager {
         }
         mListListener.finishBroadcast()
     }
-
 }

@@ -32,21 +32,19 @@ class ExpressTabAdapter :
             }
         }
 
-
         fun bind(item: ExpressTabEntity, position: Int) {
             bind.expressItemIV.setImageResource(item.icon)
             bind.expressionBG.setBackgroundResource(if (position == selectedPosition) R.drawable.im_panel_picture_bg else 0)
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpressTabViewHolder {
         return ExpressTabViewHolder(
             ImChatExpressionTabItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false
-            )
+                false,
+            ),
         )
     }
 

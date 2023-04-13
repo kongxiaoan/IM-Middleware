@@ -25,5 +25,5 @@ enum class IMLoginStatus(status: Int) {
     /**
      * 未启动
      */
-    CONNECT_DEFAULT(2)
+    CONNECT_DEFAULT(2),
 }
