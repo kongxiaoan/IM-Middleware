@@ -5,8 +5,8 @@ plugins {
 }
 apply plugin: 'com.google.protobuf'
 
-protobuf{
-    protoc{
+protobuf {
+    protoc {
         artifact = 'com.google.protobuf:protoc:3.7.0'
     }
     plugins {

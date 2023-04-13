@@ -6,7 +6,10 @@ import androidx.emoji.text.EmojiCompat
 import androidx.emoji.text.FontRequestEmojiCompatConfig
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
+import com.example.imclient.appinitializer.AppInitializersProvider
 import com.example.imclient.im.IMCore
+import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 /**
  *
@@ -14,23 +17,17 @@ import com.example.imclient.im.IMCore
  * @date: 2023/2/22
  * @description:
  */
+@HiltAndroidApp
 class MyApplication : BaseApplication() {
 
     companion object {
         lateinit var context: Context
     }
 
+    @Inject
+    lateinit var mAppInitializer: AppInitializersProvider
     override fun initApp() {
         context = this
-        IMCore.init(this)
-        Glide.init(this, GlideBuilder())
-        val fontRequest = FontRequest(
-            "com.google.android.gms.fonts",
-            "com.google.android.gms",
-            "Montserrat Subrayada",
-            R.array.com_google_android_gms_fonts_certs,
-        )
-        val config = FontRequestEmojiCompatConfig(this, fontRequest)
-        EmojiCompat.init(config)
+        mAppInitializer.startInit()
     }
 }

@@ -6,7 +6,7 @@ object Logger {
 
     const val TAG = "X-IM-MIDDLEWARE"
 
-    fun log(contnet: String) {
-        Log.d(TAG, contnet)
+    fun log(contnet: String, tag: String = TAG) {
+        Log.d(tag, contnet)
     }
 }
