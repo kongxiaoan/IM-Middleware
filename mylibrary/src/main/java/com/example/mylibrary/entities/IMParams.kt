@@ -14,7 +14,6 @@ class IMParams : Parcelable {
     var url = ""
     var uid = ""
 
-
     constructor(parcel: Parcel) {
         token = parcel.readString().toString()
         url = parcel.readString().toString()
@@ -44,7 +43,6 @@ class IMParams : Parcelable {
 
         fun getUrl() = url
 
-
         fun withUid(uid: String) = apply {
             this.uid = uid
         }
@@ -53,7 +51,6 @@ class IMParams : Parcelable {
         fun build(): IMParams {
             return IMParams(this)
         }
-
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

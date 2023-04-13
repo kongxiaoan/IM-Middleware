@@ -1,6 +1,5 @@
 # IM-Middleware
 ![image](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4cbf6d5bac74474f9296e381bd840fed~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp)
-![image](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/69a573fc724b42aaa72de547e8abef46~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?)
 ![image](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/87800ca4d2bb4c098fd7faf9ceb6e61a~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?)
 本项目是一个基于多进程的Android IM即时通信中间件，旨在帮助Android开发者了解如何在实现IM即时通信的同时，提高应用程序的稳定性和安全性。
 

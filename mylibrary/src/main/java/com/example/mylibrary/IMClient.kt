@@ -63,7 +63,6 @@ class IMClient private constructor(builder: Builder) {
         @Volatile
         private lateinit var mInstance: IMClient
 
-
         fun isInstalled() = this::mInstance.isInitialized
 
         @JvmStatic
@@ -75,7 +74,7 @@ class IMClient private constructor(builder: Builder) {
                     throw RuntimeException("已经初始化")
                 }
             }
-            return mInstance;
+            return mInstance
         }
 
         @JvmStatic
@@ -83,7 +82,7 @@ class IMClient private constructor(builder: Builder) {
             if (!isInstalled()) {
                 throw RuntimeException("IMClient 未初始化")
             }
-            return mInstance;
+            return mInstance
         }
     }
 
@@ -125,7 +124,7 @@ class IMClient private constructor(builder: Builder) {
         application: Application,
         imParams: IMParams,
         loginStatusCallback: IMLoginStatusReceiver.Stub,
-        receiver: IMMessageReceiver.Stub
+        receiver: IMMessageReceiver.Stub,
     ) {
         mApplication = application
         mReceiver = receiver
@@ -146,7 +145,6 @@ class IMClient private constructor(builder: Builder) {
         messageSender?.sendOrder(IMClientOrder.DISCONNECT.ordinal)
     }
 
-
     fun loginOut() {
         messageSender?.run {
             if (this.asBinder().isBinderAlive) {
@@ -162,13 +160,12 @@ class IMClient private constructor(builder: Builder) {
     private fun setupService() {
         mApplication?.applicationContext?.run {
             val intent = Intent(this, MessageService::class.java)
-            //希望unbind后Service仍保持运行，这样的情况下，可以同时调用bindService和startService（比如像本例子中的消息服务，退出UI进程，Service仍需要接收到消息）
+            // 希望unbind后Service仍保持运行，这样的情况下，可以同时调用bindService和startService（比如像本例子中的消息服务，退出UI进程，Service仍需要接收到消息）
             bindService(intent, iServiceConnection, Context.BIND_AUTO_CREATE)
             startService(intent)
-            //连接Socket
+            // 连接Socket
         }
     }
-
 
     private val iServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -186,7 +183,5 @@ class IMClient private constructor(builder: Builder) {
         override fun onServiceDisconnected(name: ComponentName?) {
             Logger.log("进程连接断开 $name")
         }
-
     }
-
 }

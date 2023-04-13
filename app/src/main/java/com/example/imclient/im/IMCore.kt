@@ -45,7 +45,7 @@ object IMCore {
                     }
                 }
             },
-            IMReceiver()
+            IMReceiver(),
         )
     }
 
@@ -54,26 +54,26 @@ object IMCore {
      */
     fun send(message: String) {
         // 构建文本消息
-        val textMessage = IMClientMessageOuterClass.TextMessage.newBuilder().setContent("我是文本消息").build()
+        val textMessage =
+            IMClientMessageOuterClass.TextMessage.newBuilder().setContent("我是文本消息").build()
         val params = IMClientMessage.newBuilder()
-            //发送的是用户消息
+            // 发送的是用户消息
             .setType(IMClientEnum.PlatformMsgType.USER_MSG_TYPE_VALUE)
             // 发送的是文本消息
             .setCmd(IMClientEnum.IMClientCMDEnum.CHAT_TXT_CMD_VALUE)
-            //发送者ID
+            // 发送者ID
             .setSendId("1011011")
-            //接收者
+            // 接收者
             .setChatWithId("102094")
-            //发送的内容
+            // 发送的内容
             .setBody(textMessage.toByteString())
-            //消息唯一ID
+            // 消息唯一ID
             .setMsgId(100)
-            //发送时间
+            // 发送时间
             .setSendTime(System.currentTimeMillis())
             .build()
         IMClient.with().send(params.toByteArray())
     }
-
 
     /**
      * 登出
